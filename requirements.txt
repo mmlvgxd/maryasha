@@ -1,0 +1,7 @@
+msgspec
+# Hikari & Crescent
+hikari
+hikari-crescent
+# Hikari-Crescent extensions 
+hikari-crescent[i18n]
+crescent-ext-kebabify
