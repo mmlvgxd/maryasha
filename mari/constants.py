@@ -27,7 +27,7 @@ from . import __version__
 
 
 STATUS = Status.IDLE
-ACTIVITY = Activity(name=__version__)
+ACTIVITY = Activity(name=f'v{__version__}')
 
 USERS_PATH = './users.json'
 CONFIG_PATH = './config.json'
