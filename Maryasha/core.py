@@ -26,9 +26,9 @@ from hikari import GatewayBot
 from .modules.config import MaryashaConfig
 
 
-Mari = GatewayBot(MaryashaConfig.token, banner='mari')
+Maryasha = GatewayBot(MaryashaConfig.token, banner='Maryasha')
 
-client = Client(Mari)
+client = Client(Maryasha)
 
-client.plugins.load_folder('mari.plugins.utilities')
-client.plugins.load_folder('mari.plugins.economy')
+client.plugins.load_folder('Maryasha.plugins.utilities')
+client.plugins.load_folder('Maryasha.plugins.economy')
