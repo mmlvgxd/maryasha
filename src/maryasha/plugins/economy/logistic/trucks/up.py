@@ -31,14 +31,14 @@ from crescent.ext import locales
 
 from hikari import Embed
 
-from .....helpers import author
+from .....helpers.tools import author
 from .....modules.economy import truck_level_cost
 
 from .....modules.users import load
 from .....modules.users import dump
 from .....modules.users import new
 
-from .....emojis import E_T
+from .....helpers.emojis import E_T
 
 from .....constants import W
 from .....constants import EMBED_STD_COLOR
@@ -58,28 +58,28 @@ DESCRIPTION = locales.LocaleMap('logisticTrucksUp', ru=ru_LL, en_US=en_US_LL)
 class TrucksUp:
     TITLE = 'Повышение уровня'
 
-    index = option(str, 'Номер грузовика', default=None)
+    number = option(str, 'Номер грузовика', default=None)
 
 
     async def main(self) -> None:
         CASH = self.user.cash
         TRUCKS = self.user.trucks
 
-        TRUCK = TRUCKS[self.index]
+        TRUCK = TRUCKS[self.number]
         LEVEL = TRUCK.level
 
         NEXT_LEVEL = LEVEL + 1
         cost = truck_level_cost(NEXT_LEVEL)
 
         if CASH > cost:
-            name = f'Грузовик №{self.index}'
+            name = f'Грузовик №{self.number}'
 
             self.embed.description = \
                 f'<@{self.uid}>, Вы повысили уровень' \
                 f'{W}{E_T} **{name}** до `{NEXT_LEVEL}`ур.' \
                 f'{W} за `{cost}`$'
 
-            self.user.trucks[self.index].level = NEXT_LEVEL
+            self.user.trucks[self.number].level = NEXT_LEVEL
             self.user.cash -= cost
 
             dump(self.users)

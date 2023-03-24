@@ -31,7 +31,7 @@ from .structs import Card
 
 from .types import ID
 
-from .economy import generate_card_numbers
+from .economy import card_numbers_generator
 
 from ..constants import USERS_PATH
 
@@ -54,7 +54,7 @@ def new(uid: ID) -> None:
     users = load()
 
     if uid not in users:
-        numbers = generate_card_numbers()
+        numbers = card_numbers_generator()
 
         users[uid] = User(
             {'1': Truck()},

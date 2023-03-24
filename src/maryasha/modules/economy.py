@@ -22,8 +22,6 @@
 # SOFTWARE.
 from random import randint
 
-from ..constants import W
-
 # Точки грани случайного числа заработка
 COLLECT_A_END_POINT = 120
 COLLECT_B_END_POINT = 340
@@ -35,36 +33,43 @@ COLLECT_ORANGUTAN_MULTIPLIER = 3.1
 # Максимальная вместимость грузовика
 # Зависимая от уровня
 def truck_max_capacity(level: int) -> int:
-    multiplier = 2500 # Множитель вместимости
+    multiplier = 2_500 # Множитель вместимости
 
     return int(level * multiplier)
 
 # Стоимость следующего грузовика
 # Зависимая от текущего количества грузовиков
 def truck_cost(amount: int) -> int:
-    multiplier = 5000 # Множитель стоимости
+    multiplier = 5_000 # Множитель стоимости
 
     return int(amount * multiplier)
 
 # Стоимость следующего уровня грузовика
 # Зависимое от текущего уровня
 def truck_level_cost(level: int) -> int:
-    multiplier = 1250 # Множитель стоимости
+    multiplier = 1_250 # Множитель стоимости
 
     return int(level * multiplier)
 
 # Продажа бананов из грузовиков
 # Зависимая от количества бананов
 def truck_sell(amount: int) -> int:
-    multiplier = 0.5
+    multiplier = 0.5 # Множитель продажи
 
     return int(amount * multiplier)
 
 # Генерация номера карты
-def generate_card_numbers() -> str:
+def card_numbers_generator() -> str:
     numbers = []
 
     for _ in range(4):
-        numbers.append(str(randint(1000, 9999)))
+        numbers.append(str(randint(1_000, 9_999)))
 
-    return f'{W}'.join(numbers)
+    return f'-'.join(numbers)
+
+# Максималное количество денег карты
+# Зависимое от уровня
+def card_max_money(level: int) -> int:
+    multiplier = 10_000 # Множитель денег
+
+    return int(level * multiplier)

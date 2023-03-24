@@ -2,6 +2,7 @@ msgspec
 python-dotenv
 
 hikari
+hikari-miru
 hikari-crescent
 
 hikari-crescent[i18n]

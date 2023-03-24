@@ -32,7 +32,7 @@ from crescent.ext import kebab
 
 from hikari import Embed
 
-from ....helpers import author
+from ....helpers.tools import author
 
 from ....modules.users import load
 from ....modules.users import dump
@@ -44,10 +44,10 @@ from ....modules.economy import COLLECT_MONKEY_MULTIPLIER as CMM
 from ....modules.economy import COLLECT_GORILLA_MULTIPLIER as CGM
 from ....modules.economy import COLLECT_ORANGUTAN_MULTIPLIER as COM
 
-from ....emojis import E_B
-from ....emojis import E_M
-from ....emojis import E_G
-from ....emojis import E_O
+from ....helpers.emojis import E_B
+from ....helpers.emojis import E_M
+from ....helpers.emojis import E_G
+from ....helpers.emojis import E_O
 
 from ....constants import EMBED_STD_COLOR
 

@@ -28,10 +28,8 @@ from crescent import Context
 from crescent.ext import locales
 from crescent.ext import kebab
 
-from hikari import GatewayBot
 
-
-plugin = Plugin[GatewayBot, None]()
+plugin = Plugin()
 
 ru_LL = 'Снять деньги с карты'
 en_US_LL = 'Withdraw money from the card'

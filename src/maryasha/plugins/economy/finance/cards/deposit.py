@@ -20,7 +20,10 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+from asyncio import gather
+
 from crescent import command
+from crescent import option
 
 from crescent import Plugin
 from crescent import Context
@@ -28,10 +31,27 @@ from crescent import Context
 from crescent.ext import locales
 from crescent.ext import kebab
 
-from hikari import GatewayBot
+from hikari import Embed
+
+from flare import Row
+from flare import text_select
+from flare import MessageContext
+
+from .....helpers.tools import author
+
+from .....modules.users import load
+from .....modules.users import dump
+from .....modules.users import new
+
+from .....modules.economy import card_max_money
+
+from .....helpers.emojis import E_C
+from .....helpers.emojis import E_CC
+
+from .....constants import EMBED_STD_COLOR
 
 
-plugin = Plugin[GatewayBot, None]()
+plugin = Plugin()
 
 ru_LL = 'Положить деньги на карту'
 en_US_LL = 'Deposit money on the card'
@@ -43,5 +63,62 @@ DESCRIPTION = locales.LocaleMap('cardsDeposit', ru=ru_LL, en_US=en_US_LL)
 @kebab.ify
 @command(description=DESCRIPTION)
 class CardsDeposit:
+    TITLE = 'Депозит'
+
+    amount = option(int, 'Количество денег')
+
+
+    async def main(self) -> None:
+        CARDS = self.user.cards
+
+        options = []
+
+        for card in CARDS.items():
+            options.append(card[0])
+
+        @text_select(
+        placeholder='Карты',
+        options=options
+        )
+        async def menu(ctx: MessageContext):
+            numbers = ctx.values[0]
+
+            CARD = CARDS[numbers]
+            CASH = self.user.cash
+            LEVEL = CARD.level
+
+            if self.amount <= CASH:
+                _embed = Embed(title=self.TITLE, color=EMBED_STD_COLOR)
+                author(ctx.member, _embed)
+
+                self.user.cash -= self.amount
+                self.user.cards[numbers].money += self.amount
+
+                dump(self.users)
+
+                _embed.description = \
+                    f'{E_CC} Вы положили {E_C}' \
+                    f'`{self.amount}`$ денег на карту'
+
+                await ctx.respond(embed=_embed)
+
+
+        self.embed.description = f'{E_CC} Выберите Вашу карту для депозита'
+        components = await gather(Row(menu()))
+
+        return components
+
+
     async def callback(self, ctx: Context) -> None:
-        await ctx.respond('pong')
+        self.uid = str(ctx.user.id)
+
+        self.embed = Embed(title=self.TITLE, color=EMBED_STD_COLOR)
+        author(ctx.member, self.embed)
+
+        new(self.uid)
+        self.users = load()
+        self.user = self.users[self.uid]
+
+        components = await self.main()
+
+        await ctx.respond(embed=self.embed, components=components, ephemeral=True)

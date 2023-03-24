@@ -30,17 +30,17 @@ from crescent.ext import locales
 
 from hikari import Embed
 
-from .....helpers import author
-from .....helpers import is_even
+from .....helpers.tools import author
+from .....helpers.tools import is_even
 from .....modules.economy import truck_max_capacity
 
 from .....modules.users import load
 from .....modules.users import dump
 from .....modules.users import new
 
-from .....emojis import E_T
-from .....emojis import E_B
-from .....emojis import E_AL
+from .....helpers.emojis import E_T
+from .....helpers.emojis import E_B
+from .....helpers.emojis import E_AL
 
 from .....constants import W
 from .....constants import EMBED_STD_COLOR
@@ -68,7 +68,7 @@ class TrucksPut:
         self.embed.description = str()
 
         for truck in TRUCKS.items():
-            index = truck[0]
+            number = truck[0]
             properties = truck[1]
 
             level = properties.level
@@ -76,11 +76,11 @@ class TrucksPut:
 
             max_capacity = truck_max_capacity(level)
 
-            emoji = E_AL if is_even(int(index)) else E_T
+            emoji = E_AL if is_even(int(number)) else E_T
 
             if capacity >= max_capacity:
                 self.embed.description += \
-                    f'{emoji} **Грузовик №{index}**{W}' \
+                    f'{emoji} **Грузовик №{number}**{W}' \
                     f'полность заполнен{W}' \
                     f'(`{capacity}`/`{max_capacity}`)\n'
 
@@ -100,9 +100,9 @@ class TrucksPut:
 
             self.embed.description += \
                 f'Вместили `{total}`/`{max_capacity}`{W}' \
-                f'в {emoji} **Грузовик №{index}**\n'
+                f'в {emoji} **Грузовик №{number}**\n'
 
-            self.user.trucks[index].capacity += _total
+            self.user.trucks[number].capacity += _total
 
         self.embed.description += \
             f'\nОсталось вместить {E_B}{W}' \

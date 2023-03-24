@@ -1,3 +1,7 @@
+# v2.0.7
+- Команда `deposit`
+- Исправления
+- Изменение `assets/banner.jpg`
 # v2.0.6
 - Флора
 - Доработка
@@ -8,10 +12,10 @@
 # v2.0.4
 - Доработка
 # v2.0.3
-- Добавление `mari/emojis.py`
-- Добавление `mari/helpers.py`
-- Добавление `mari/modules/economy.py`
-- Команда `mari/plugins/economy/profile.py`
+- Добавление `emojis.py`
+- Добавление `helpers.py`
+- Добавление `economy.py`
+- Команда `profile`
 # v2.0.2
 - Изменение `README.md`
 - Доработка `ACTIVITY`

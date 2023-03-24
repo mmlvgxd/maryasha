@@ -31,7 +31,7 @@ from crescent.ext import kebab
 from hikari import GatewayBot
 
 
-plugin = Plugin[GatewayBot, None]()
+plugin = Plugin()
 
 ru_LL = 'Перевести деньги на карту'
 en_US_LL = 'Transfer money to a card'

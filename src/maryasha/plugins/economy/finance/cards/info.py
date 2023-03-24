@@ -31,7 +31,7 @@ from crescent.ext import kebab
 from hikari import GatewayBot
 
 
-plugin = Plugin[GatewayBot, None]()
+plugin = Plugin()
 
 ru_LL = 'Информация о картах'
 en_US_LL = 'Information about cards'

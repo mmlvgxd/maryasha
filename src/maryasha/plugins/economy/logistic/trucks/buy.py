@@ -30,7 +30,7 @@ from crescent.ext import locales
 
 from hikari import Embed
 
-from .....helpers import author
+from .....helpers.tools import author
 from .....modules.economy import truck_cost
 
 from .....modules.users import load
@@ -39,7 +39,7 @@ from .....modules.users import new
 
 from .....modules.structs import Truck
 
-from .....emojis import E_T
+from .....helpers.emojis import E_T
 
 from .....constants import W
 from .....constants import EMBED_STD_COLOR

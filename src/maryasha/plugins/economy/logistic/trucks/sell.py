@@ -30,17 +30,17 @@ from crescent.ext import locales
 
 from hikari import Embed
 
-from .....helpers import author
-from .....helpers import is_even
+from .....helpers.tools import author
+from .....helpers.tools import is_even
 from .....modules.economy import truck_sell
 
 from .....modules.users import load
 from .....modules.users import dump
 from .....modules.users import new
 
-from .....emojis import E_T
-from .....emojis import E_AL
-from .....emojis import E_MWW
+from .....helpers.emojis import E_T
+from .....helpers.emojis import E_AL
+from .....helpers.emojis import E_MWW
 
 from .....constants import W
 from .....constants import EMBED_STD_COLOR
@@ -68,19 +68,19 @@ class TrucksSell:
         self.embed.description = str()
 
         for truck in TRUCKS.items():
-            index = truck[0]
+            number = truck[0]
             properties = truck[1]
 
             sold = properties.capacity
             earnings = truck_sell(sold)
 
             TOTAL_EARNINGS += earnings
-            self.user.trucks[index].capacity -= sold
+            self.user.trucks[number].capacity -= sold
 
-            emoji = E_AL if is_even(int(index)) else E_T
+            emoji = E_AL if is_even(int(number)) else E_T
 
             self.embed.description += \
-                f'{emoji} **Грузовик №{index}**{W}' \
+                f'{emoji} **Грузовик №{number}**{W}' \
                 f'продал :banana: `{sold}`шт.{W}' \
                 f'за`{earnings}`$\n'
 

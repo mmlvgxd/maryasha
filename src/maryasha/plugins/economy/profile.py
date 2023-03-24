@@ -27,12 +27,11 @@ from crescent import Plugin
 from crescent import Context
 
 from hikari import Embed
-from hikari import GatewayBot
 
 from crescent.ext import kebab
 from crescent.ext import locales
 
-from ...helpers import author
+from ...helpers.tools import author
 
 from ...modules.users import load
 from ...modules.users import new
@@ -41,21 +40,21 @@ from ...modules.economy import truck_max_capacity
 
 from ...modules.structs import User
 
-from ...emojis import E_C
-from ...emojis import E_T
-from ...emojis import E_B
-from ...emojis import E_M
-from ...emojis import E_G
-from ...emojis import E_O
-from ...emojis import E_CC
-from ...emojis import E_PC
-from ...emojis import E_MWW
+from ...helpers.emojis import E_C
+from ...helpers.emojis import E_T
+from ...helpers.emojis import E_B
+from ...helpers.emojis import E_M
+from ...helpers.emojis import E_G
+from ...helpers.emojis import E_O
+from ...helpers.emojis import E_CC
+from ...helpers.emojis import E_PC
+from ...helpers.emojis import E_MWW
 
 from ...constants import W
 from ...constants import EMBED_STD_COLOR
 
 
-plugin = Plugin[GatewayBot, None]()
+plugin = Plugin()
 
 ru_LL = 'Профиль пользователя'
 en_US_LL = 'Profile of the user'
