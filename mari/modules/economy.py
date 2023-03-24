@@ -20,30 +20,19 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from msgspec import Struct
+from random import randint
+
+from ..constants import W
 
 
-class Truck(Struct):
-    '''A Maryasha type describing a Truck'''
-    level: int = 1
-    capacity: int = 0
+def truck_max_capacity(level: int) -> int:
+    return int(level * 2500)
 
 
-class Card(Struct):
-    '''A Maryasha type describing a Card'''
-    level: int = 1
-    money: int = 0
+def generate_card_numbers() -> str:
+    numbers = []
 
+    for _ in range(4):
+        numbers.append(str(randint(1000, 9999)))
 
-class User(Struct):
-    '''A Maryasha type describing a User'''
-    trucks: dict[str, Truck]
-    cards: dict[str, Card]
-
-    banana: int = 0
-
-    monkey: int = 0
-    gorilla: int = 0
-    orangutan: int = 0
-
-    cash: int = 0
+    return f'{W}'.join(numbers)

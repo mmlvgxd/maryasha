@@ -1,3 +1,8 @@
+# v2.0.3
+- Добавление `mari/emojis.py`
+- Добавление `mari/helpers.py`
+- Добавление `mari/modules/economy.py`
+- Команда `mari/plugins/economy/profile.py`
 # v2.0.2
 - Изменение `README.md`
 - Доработка `ACTIVITY`

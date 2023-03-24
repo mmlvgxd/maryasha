@@ -23,10 +23,11 @@
 from crescent import Client
 from hikari import GatewayBot
 
-from .modules.config import config
+from .modules.config import MaryashaConfig
 
 
-Mari = GatewayBot(config.token, banner='mari')
+Mari = GatewayBot(MaryashaConfig.token, banner='mari')
+
 client = Client(Mari)
 
 client.plugins.load_folder('mari.plugins.utilities')

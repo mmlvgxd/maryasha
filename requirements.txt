@@ -1,7 +1,8 @@
 msgspec
-# Hikari & Crescent
+python-dotenv
+
 hikari
 hikari-crescent
-# Hikari-Crescent extensions 
+
 hikari-crescent[i18n]
 crescent-ext-kebabify

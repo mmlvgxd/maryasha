@@ -20,14 +20,20 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+from hikari import Color
 from hikari import Status
 from hikari import Activity
 
 from . import __version__
 
 
+W = ' '
+
 STATUS = Status.IDLE
 ACTIVITY = Activity(name=f'v{__version__}')
 
 USERS_PATH = './users.json'
 CONFIG_PATH = './config.json'
+
+EMBED_STD_COLOR = Color.from_rgb(255, 236, 130)
+EMBED_ERR_COLOR = Color.from_rgb(255, 75, 75)

@@ -21,28 +21,147 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 from crescent import command
+from crescent import option
 
 from crescent import Plugin
 from crescent import Context
 
-from crescent.ext import locales
+from hikari import Embed
+from hikari import GatewayBot
+
 from crescent.ext import kebab
 
-from hikari import GatewayBot
+from ...helpers import author
+
+from ...modules.users import load
+from ...modules.users import new
+
+from ...modules.economy import truck_max_capacity
+
+from ...modules.structs import User
+
+from ...emojis import E_C
+from ...emojis import E_T
+from ...emojis import E_B
+from ...emojis import E_M
+from ...emojis import E_G
+from ...emojis import E_O
+from ...emojis import E_CC
+from ...emojis import E_PC
+from ...emojis import E_MWW
+
+from ...constants import W
+from ...constants import EMBED_STD_COLOR
 
 
 plugin = Plugin[GatewayBot, None]()
 
 
-ru_LL = 'Просмотр профиля пользователя'
-en_US_LL = 'View user profile'
-
-DESCRIPTION = locales.LocaleMap('profile', ru=ru_LL, en_US=en_US_LL)
+DESCRIPTION = 'Профиль пользователя'
 
 
 @plugin.include
 @kebab.ify
 @command(description=DESCRIPTION)
 class Profile:
+    TITLE = 'Профиль'
+
+    type = option(str, 'Тип опции', choices=[
+        ('Фауна', '1'),
+        ('Флора', '2'),
+        ('Финансы', '3'),
+        ('Логистика', '4')
+    ])
+
+
+    async def fauna(self, user: User) -> None:
+        MONKEY = user.monkey
+        GORILLA = user.gorilla
+        ORANGUTAN = user.orangutan
+
+        description = \
+            f'{E_M} **Обезьян**: `{MONKEY}`шт.\n' \
+            f'{E_G} **Горилл**: `{GORILLA}`шт.\n' \
+            f'{E_O} **Орангутанов**: `{ORANGUTAN}`шт.'
+
+        self.embed.description = description
+
+
+    async def flora(self, user: User) -> None:
+        BANANA = user.banana
+
+        description = f'{E_B} **Бананов**: `{BANANA}`шт.'
+
+        self.embed.description = description
+
+
+    async def finance(self, user: User) -> None:
+        CASH = user.cash
+
+        description = f'{E_MWW} **Наличных**: `{CASH}`$'
+
+        if user.cards is not None:
+
+            for card in user.cards.items():
+                numbers = card[0]
+                properties = card[1]
+
+                level = properties.level
+                money = properties.money
+
+                value = \
+                    f'{E_CC} ||{numbers}||\n' \
+                    f'> {E_PC} **Уровень**: `{level}`ур.\n' \
+                    f'> {E_C} **Денег**: `{money}`$'
+
+                self.embed.add_field(name='Карты', value=value)
+
+        self.embed.description = description
+
+
+    async def logistic(self, user: User) -> None:
+        description = str()
+
+        TRUCKS = user.trucks
+
+        for truck in TRUCKS.items():
+            index = truck[0]
+            properties = truck[1]
+
+            level = properties.level
+            capacity = properties.capacity
+
+            max_capacity = truck_max_capacity(level)
+
+            name = f'Грузовик №{index}'
+
+            description += \
+                f'{E_T} **{name}**\n' \
+                f'> {E_PC} **Уровень**: `{level}`ур.\n' \
+                f'> {E_B} **Вместимость**:{W}' \
+                f'`{capacity}`/`{max_capacity}`шт.\n'
+
+        self.embed.description = description
+
+
     async def callback(self, ctx: Context) -> None:
-        await ctx.respond('pong')
+        self.uid = str(ctx.user.id)
+        self.embed = Embed(title=self.TITLE, color=EMBED_STD_COLOR)
+        author(ctx.member, self.embed)
+
+        types = {
+            '1': self.fauna,
+            '2': self.flora,
+            '3': self.finance,
+            '4': self.logistic
+        }
+
+        new(self.uid)
+        users = load()
+        user = users[self.uid]
+
+        for _type in types.items():
+            if self.type == _type[0]:
+                await _type[1](user)
+
+        await ctx.respond(embed=self.embed)
