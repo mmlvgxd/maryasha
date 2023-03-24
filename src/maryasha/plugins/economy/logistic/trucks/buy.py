@@ -20,8 +20,6 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-import i18n
-
 from crescent import command
 
 from crescent import Plugin
@@ -30,20 +28,67 @@ from crescent import Context
 from crescent.ext import kebab
 from crescent.ext import locales
 
-from hikari import GatewayBot
+from hikari import Embed
+
+from .....helpers import author
+from .....modules.economy import truck_cost
+
+from .....modules.users import load
+from .....modules.users import dump
+from .....modules.users import new
+
+from .....modules.structs import Truck
+
+from .....emojis import E_T
+
+from .....constants import W
+from .....constants import EMBED_STD_COLOR
 
 
-plugin = Plugin[GatewayBot, None]()
+plugin = Plugin()
 
-ru_LL = 'Информация о грузовиках'
-en_US_LL = 'Information about trucks'
+ru_LL = 'Купить грузовик'
+en_US_LL = 'Buy a truck'
 
-DESCRIPTION = locales.LocaleMap('logisticTrucksInfo', ru=ru_LL, en_US=en_US_LL)
+DESCRIPTION = locales.LocaleMap('logisticTrucksBuy', ru=ru_LL, en_US=en_US_LL)
 
 
 @plugin.include
 @kebab.ify
 @command(description=DESCRIPTION)
 class TrucksBuy:
+    TITLE = 'Покупка'
+
+
+    async def main(self) -> None:
+        TRUCKS = self.user.trucks
+        amount = len(TRUCKS.items()) + 1
+
+        if not amount > 10:
+            cost = truck_cost(amount)
+
+            if not cost < self.user.cash:
+                self.user.trucks[str(amount)] = Truck()
+
+                self.embed.description = \
+                    f'{E_T} Вы купили новый{W}' \
+                    f'**Грузовик №{amount}**{W}' \
+                    f'за `{cost}`$'
+
+                self.user.cash -= cost
+                dump(self.users)
+
+
     async def callback(self, ctx: Context) -> None:
-        await ctx.respond('pong')
+        self.uid = str(ctx.user.id)
+
+        self.embed = Embed(title=self.TITLE, color=EMBED_STD_COLOR)
+        author(ctx.member, self.embed)
+
+        new(self.uid)
+        self.users = load()
+        self.user = self.users[self.uid]
+
+        await self.main()
+
+        await ctx.respond(embed=self.embed)

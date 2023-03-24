@@ -20,30 +20,13 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-import i18n
-
-from crescent import command
-
-from crescent import Plugin
-from crescent import Context
-
-from crescent.ext import kebab
-from crescent.ext import locales
-
-from hikari import GatewayBot
-
-
-plugin = Plugin[GatewayBot, None]()
-
-ru_LL = 'Поместить бананы в грузовики'
-en_US_LL = 'Put bananas in trucks'
-
-DESCRIPTION = locales.LocaleMap('logisticTrucksPut', ru=ru_LL, en_US=en_US_LL)
-
-
-@plugin.include
-@kebab.ify
-@command(description=DESCRIPTION)
-class TrucksPut:
-    async def callback(self, ctx: Context) -> None:
-        await ctx.respond('pong')
+E_C = ':coin:'
+E_T = ':truck:'
+E_B = ':banana:'
+E_M = ':monkey:'
+E_G = ':gorilla:'
+E_O = ':orangutan:'
+E_CC = ':credit_card:'
+E_PC = ':paperclip:'
+E_AL = ':articulated_lorry:'
+E_MWW = ':money_with_wings:'

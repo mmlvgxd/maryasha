@@ -29,6 +29,18 @@ def truck_max_capacity(level: int) -> int:
     return int(level * 2500)
 
 
+def truck_cost(amount: int) -> int:
+    return int(amount * 5000)
+
+
+def truck_level_cost(level: int) -> int:
+    return int(level * 1250)
+
+
+def truck_sell(capacity: int) -> int:
+    return int(capacity * 0.5)
+
+
 def generate_card_numbers() -> str:
     numbers = []
 

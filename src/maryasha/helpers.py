@@ -20,10 +20,19 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from .core import Mari
-
-from .constants import STATUS
-from .constants import ACTIVITY
+from hikari import Embed
+from hikari import Member
 
 
-Mari.run(activity=ACTIVITY, status=STATUS)
+def author(member: Member, embed: Embed) -> None:
+    name = member.username
+    icon = member.avatar_url
+
+    embed.set_author(name=name, icon=icon)
+
+
+def is_even(number: int) -> bool:
+    if number & 1:
+        return False # Нечетное
+    else:
+        return True # Четное

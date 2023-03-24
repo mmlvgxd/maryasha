@@ -20,8 +20,6 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-import i18n
-
 from crescent import command
 
 from crescent import Plugin
@@ -30,20 +28,57 @@ from crescent import Context
 from crescent.ext import kebab
 from crescent.ext import locales
 
-from hikari import GatewayBot
+from hikari import Embed
+
+from .....helpers import author
+from .....modules.economy import truck_cost
+
+from .....modules.users import load
+from .....modules.users import new
+
+from .....emojis import E_MWW
+
+from .....constants import W
+from .....constants import EMBED_STD_COLOR
 
 
-plugin = Plugin[GatewayBot, None]()
+plugin = Plugin()
 
-ru_LL = 'Продать бананы из грузовика'
-en_US_LL = 'Sell bananas from the truck'
+ru_LL = 'Информация о грузовиках'
+en_US_LL = 'Information about trucks'
 
-DESCRIPTION = locales.LocaleMap('logisticTrucksSell', ru=ru_LL, en_US=en_US_LL)
+DESCRIPTION = locales.LocaleMap('logisticTrucksInfo', ru=ru_LL, en_US=en_US_LL)
 
 
 @plugin.include
 @kebab.ify
 @command(description=DESCRIPTION)
-class TrucksSell:
+class TrucksInfo:
+    TITLE = 'Информация'
+
+
+    async def main(self) -> None:
+        TRUCKS = self.user.trucks
+        amount = len(TRUCKS.items()) + 1
+
+        if not amount > 10:
+            cost = truck_cost(amount)
+
+            self.embed.description = \
+                f'{E_MWW} **Цена грузовика**:{W}' \
+                f'`{cost}`$'
+
+
     async def callback(self, ctx: Context) -> None:
-        await ctx.respond('pong')
+        self.uid = str(ctx.user.id)
+
+        self.embed = Embed(title=self.TITLE, color=EMBED_STD_COLOR)
+        author(ctx.member, self.embed)
+
+        new(self.uid)
+        self.users = load()
+        self.user = self.users[self.uid]
+
+        await self.main()
+
+        await ctx.respond(embed=self.embed)

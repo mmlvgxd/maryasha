@@ -20,12 +20,15 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-E_C = ':coin:'
-E_T = ':truck:'
-E_B = ':banana:'
-E_M = ':monkey:'
-E_G = ':gorilla:'
-E_O = ':orangutan:'
-E_CC = ':credit_card:'
-E_PC = ':paperclip:'
-E_MWW = ':money_with_wings:'
+from crescent import Client
+from hikari import GatewayBot
+
+from .modules.config import MaryashaConfig
+
+
+Maryasha = GatewayBot(MaryashaConfig.token, banner='src.maryasha')
+
+client = Client(Maryasha)
+
+client.plugins.load_folder('src.maryasha.plugins.utilities')
+client.plugins.load_folder('src.maryasha.plugins.economy')

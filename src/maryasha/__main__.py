@@ -20,15 +20,10 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from crescent import Client
-from hikari import GatewayBot
+from .core import Maryasha
 
-from .modules.config import MaryashaConfig
+from .constants import STATUS
+from .constants import ACTIVITY
 
 
-Maryasha = GatewayBot(MaryashaConfig.token, banner='Maryasha')
-
-client = Client(Maryasha)
-
-client.plugins.load_folder('Maryasha.plugins.utilities')
-client.plugins.load_folder('Maryasha.plugins.economy')
+Maryasha.run(activity=ACTIVITY, status=STATUS)
