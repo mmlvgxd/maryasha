@@ -30,6 +30,7 @@ from hikari import Embed
 from hikari import GatewayBot
 
 from crescent.ext import kebab
+from crescent.ext import locales
 
 from ...helpers import author
 
@@ -56,8 +57,10 @@ from ...constants import EMBED_STD_COLOR
 
 plugin = Plugin[GatewayBot, None]()
 
+ru_LL = 'Профиль пользователя'
+en_US_LL = 'Profile of the user'
 
-DESCRIPTION = 'Профиль пользователя'
+DESCRIPTION = locales.LocaleMap('profile', ru=ru_LL, en_US=en_US_LL)
 
 
 @plugin.include

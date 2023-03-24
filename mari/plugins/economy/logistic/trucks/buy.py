@@ -35,10 +35,10 @@ from hikari import GatewayBot
 
 plugin = Plugin[GatewayBot, None]()
 
-ru_LL = 'Информация о грузовиках'
-en_US_LL = 'Information about trucks'
+ru_LL = 'Купить грузовик'
+en_US_LL = 'Buy a truck'
 
-DESCRIPTION = locales.LocaleMap('trucksInfo', ru=ru_LL, en_US=en_US_LL)
+DESCRIPTION = locales.LocaleMap('logisticTrucksBuy', ru=ru_LL, en_US=en_US_LL)
 
 
 @plugin.include

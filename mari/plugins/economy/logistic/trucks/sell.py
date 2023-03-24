@@ -35,15 +35,15 @@ from hikari import GatewayBot
 
 plugin = Plugin[GatewayBot, None]()
 
-ru_LL = 'Купить грузовик'
-en_US_LL = 'Buy a truck'
+ru_LL = 'Продать бананы из грузовика'
+en_US_LL = 'Sell bananas from the truck'
 
-DESCRIPTION = locales.LocaleMap('trucksBuy', ru=ru_LL, en_US=en_US_LL)
+DESCRIPTION = locales.LocaleMap('logisticTrucksSell', ru=ru_LL, en_US=en_US_LL)
 
 
 @plugin.include
 @kebab.ify
 @command(description=DESCRIPTION)
-class TrucksBuy:
+class TrucksSell:
     async def callback(self, ctx: Context) -> None:
         await ctx.respond('pong')

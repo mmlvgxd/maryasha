@@ -38,7 +38,7 @@ plugin = Plugin[GatewayBot, None]()
 ru_LL = 'Повысить уровень грузовика'
 en_US_LL = 'Level up the truck'
 
-DESCRIPTION = locales.LocaleMap('trucksUp', ru=ru_LL, en_US=en_US_LL)
+DESCRIPTION = locales.LocaleMap('logisticTrucksUp', ru=ru_LL, en_US=en_US_LL)
 
 
 @plugin.include
