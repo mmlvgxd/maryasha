@@ -29,26 +29,28 @@ from .structs import User
 from .structs import Truck
 from .structs import Card
 
+from .types import ID
+
 from .economy import generate_card_numbers
 
 from ..constants import USERS_PATH
 
 
-decoder = Decoder(dict[str, User])
+decoder = Decoder(dict[ID, User])
 encoder = Encoder()
 
-
-def load() -> dict[str, User]:
+# Выгрузить словарь пользователей
+def load() -> dict[ID, User]:
     with open(USERS_PATH, 'r') as stream:
         return decoder.decode(stream.read())
 
-
+# Обновить словарь пользователей
 def dump(obj__: Any, /) -> None:
     with open(USERS_PATH, 'wb') as stream:
         stream.write(encoder.encode(obj__))
 
-
-def new(uid: str) -> None:
+# Добавить в словарь пользователя
+def new(uid: ID) -> None:
     users = load()
 
     if uid not in users:

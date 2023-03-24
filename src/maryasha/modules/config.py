@@ -25,10 +25,12 @@ from dotenv import load_dotenv
 
 from dataclasses import dataclass
 
-
+# Загрузить окружение .env
 load_dotenv()
 
 
 @dataclass
 class MaryashaConfig:
+    # Получение из загруженного
+    # Раннее окружения ключ с токеном
     token: str = environ['token']

@@ -20,33 +20,9 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from msgspec import Struct
-
-from .types import CardNumbers
-from .types import TruckNumber
+from typing import NewType
 
 
-class Truck(Struct):
-    '''A Maryasha type describing a Truck'''
-    level: int = 1 # Уровень грузовика
-    capacity: int = 0 # Вместимость грузовика
-
-
-class Card(Struct):
-    '''A Maryasha type describing a Card'''
-    level: int = 1 # Уровень карты
-    money: int = 0 # Деньги карты
-
-
-class User(Struct):
-    '''A Maryasha type describing a User'''
-    trucks: dict[TruckNumber, Truck] # Грузовики
-    cards: dict[CardNumbers, Card] # Карты
-
-    banana: int = 0 # Бананы
-
-    monkey: int = 0 # Обезьяны
-    gorilla: int = 0 # Гориллы
-    orangutan: int = 0 # Орангутаны
-
-    cash: int = 0 # Наличные
+ID = NewType('ID', str) # ID пользователя Discord
+CardNumbers = NewType('Numbers', str) # Номер карты
+TruckNumber = NewType('Number', str) # Номер грузовика

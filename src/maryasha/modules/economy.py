@@ -24,23 +24,43 @@ from random import randint
 
 from ..constants import W
 
+# Точки грани случайного числа заработка
+COLLECT_A_END_POINT = 120
+COLLECT_B_END_POINT = 340
+# Множитель заработка представителей фауны
+COLLECT_MONKEY_MULTIPLIER = 1.3
+COLLECT_GORILLA_MULTIPLIER = 2.2
+COLLECT_ORANGUTAN_MULTIPLIER = 3.1
 
+# Максимальная вместимость грузовика
+# Зависимая от уровня
 def truck_max_capacity(level: int) -> int:
-    return int(level * 2500)
+    multiplier = 2500 # Множитель вместимости
 
+    return int(level * multiplier)
 
+# Стоимость следующего грузовика
+# Зависимая от текущего количества грузовиков
 def truck_cost(amount: int) -> int:
-    return int(amount * 5000)
+    multiplier = 5000 # Множитель стоимости
 
+    return int(amount * multiplier)
 
+# Стоимость следующего уровня грузовика
+# Зависимое от текущего уровня
 def truck_level_cost(level: int) -> int:
-    return int(level * 1250)
+    multiplier = 1250 # Множитель стоимости
 
+    return int(level * multiplier)
 
-def truck_sell(capacity: int) -> int:
-    return int(capacity * 0.5)
+# Продажа бананов из грузовиков
+# Зависимая от количества бананов
+def truck_sell(amount: int) -> int:
+    multiplier = 0.5
 
+    return int(amount * multiplier)
 
+# Генерация номера карты
 def generate_card_numbers() -> str:
     numbers = []
 
