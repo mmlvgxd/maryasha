@@ -1,3 +1,8 @@
+# v2.0.9
+- Команда `fauna-tame`
+- Команда `fauna-info`
+- Добавление `fauna.py`
+- Исправления
 # v2.0.8
 - Команда `cards-info`
 - Команда `cards-send`

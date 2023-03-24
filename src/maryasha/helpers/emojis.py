@@ -20,6 +20,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+E_X = ':x:'
 E_C = ':coin:'
 E_T = ':truck:'
 E_B = ':banana:'
@@ -28,5 +29,7 @@ E_G = ':gorilla:'
 E_O = ':orangutan:'
 E_CC = ':credit_card:'
 E_PC = ':paperclip:'
+E_MW = ':magic_wand:'
 E_AL = ':articulated_lorry:'
+E_WCM = ':white_check_mark:'
 E_MWW = ':money_with_wings:'

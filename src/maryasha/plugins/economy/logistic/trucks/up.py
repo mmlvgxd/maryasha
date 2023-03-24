@@ -31,7 +31,7 @@ from crescent.ext import locales
 
 from hikari import Embed
 
-from .....helpers.tools import author
+from .....helpers.other import author
 from .....modules.economy import truck_level_cost
 
 from .....modules.users import load

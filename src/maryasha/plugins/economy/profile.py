@@ -31,7 +31,7 @@ from hikari import Embed
 from crescent.ext import kebab
 from crescent.ext import locales
 
-from ...helpers.tools import author
+from ...helpers.other import author
 
 from ...modules.users import load
 from ...modules.users import new

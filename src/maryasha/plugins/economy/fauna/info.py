@@ -21,6 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 from crescent import command
+from crescent import option
 
 from crescent import Plugin
 from crescent import Context
@@ -28,10 +29,21 @@ from crescent import Context
 from crescent.ext import locales
 from crescent.ext import kebab
 
-from hikari import GatewayBot
+from hikari import Embed
+
+from ....helpers.other import author
+
+from ....helpers.emojis import E_B
+from ....helpers.emojis import E_MW
+
+from ....modules.fauna import Monkey
+from ....modules.fauna import Gorilla
+from ....modules.fauna import Orangutan
+
+from ....constants import EMBED_STD_COLOR
 
 
-plugin = Plugin[GatewayBot, None]()
+plugin = Plugin()
 
 ru_LL = 'Информация о фауне'
 en_US_LL = 'Information about fauna'
@@ -43,5 +55,42 @@ DESCRIPTION = locales.LocaleMap('faunaInfo', ru=ru_LL, en_US=en_US_LL)
 @kebab.ify
 @command(description=DESCRIPTION)
 class FaunaInfo:
+    TITLE = 'Фауна'
+
+    representative = option(str, 'Тип', choices=[
+        (Monkey.locale, 'monkey'),
+        (Gorilla.locale, 'gorilla'),
+        (Orangutan.locale, 'orangutan')
+    ])
+
+
+    async def main(self) -> None:
+        fauna = {
+            'monkey': Monkey,
+            'gorilla': Gorilla,
+            'orangutan': Orangutan
+        }
+
+        _representative = fauna[self.representative]
+
+        locale = _representative.locale
+        value = _representative.value
+        rarity = _representative.rarity
+
+        evalue = \
+            f':{self.representative}: `/fauna feed {self.representative}`\n' \
+            f'{E_B} **Стоимость приручения**: `{value}`шт.\n' \
+            f'{E_MW} **Вероятность приручения**: `1/{rarity}`'
+
+        self.embed.add_field(name=locale, value=evalue)
+
+
     async def callback(self, ctx: Context) -> None:
-        await ctx.respond('pong')
+        self.uid = str(ctx.user.id)
+
+        self.embed = Embed(title=self.TITLE, color=EMBED_STD_COLOR)
+        author(ctx.member, self.embed)
+
+        await self.main()
+
+        await ctx.respond(embed=self.embed)

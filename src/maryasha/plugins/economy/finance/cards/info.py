@@ -36,7 +36,7 @@ from flare import Row
 from flare import text_select
 from flare import MessageContext
 
-from .....helpers.tools import author
+from .....helpers.other import author
 from .....modules.economy import card_level_cost
 
 from .....modules.users import load

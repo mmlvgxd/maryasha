@@ -30,8 +30,8 @@ from crescent.ext import locales
 
 from hikari import Embed
 
-from .....helpers.tools import author
-from .....helpers.tools import is_even
+from .....helpers.other import author
+from .....helpers.other import is_even
 from .....modules.economy import truck_sell
 
 from .....modules.users import load

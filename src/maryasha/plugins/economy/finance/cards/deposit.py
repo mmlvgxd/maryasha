@@ -37,7 +37,7 @@ from flare import Row
 from flare import text_select
 from flare import MessageContext
 
-from .....helpers.tools import author
+from .....helpers.other import author
 
 from .....modules.users import load
 from .....modules.users import dump

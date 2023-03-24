@@ -32,7 +32,7 @@ from crescent.ext import kebab
 
 from hikari import Embed
 
-from ....helpers.tools import author
+from ....helpers.other import author
 
 from ....modules.users import load
 from ....modules.users import dump
@@ -76,9 +76,9 @@ class FloraCollect:
 
         collected = randint(CAEP, CBEP)
 
-        monkey_collected = int(CMM * MONKEY)
-        gorilla_collected = int(CGM * GORILLA)
-        orangutan_collected = int(COM * ORANGUTAN)
+        monkey_collected = int(CMM * MONKEY * collected)
+        gorilla_collected = int(CGM * GORILLA * collected)
+        orangutan_collected = int(COM * ORANGUTAN * collected)
 
         fauna = {
             'Обезьяны': [monkey_collected, E_M],
@@ -100,6 +100,7 @@ class FloraCollect:
             properties = representative[1]
 
             _collected = properties[0]
+            print(properties)
             emoji = properties[1]
 
             if _collected != 0:
