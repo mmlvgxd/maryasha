@@ -24,6 +24,7 @@ from random import randint
 
 from crescent import command
 
+from crescent import Group
 from crescent import Plugin
 from crescent import Context
 
@@ -33,6 +34,7 @@ from crescent.ext import kebab
 from hikari import Embed
 
 from ....helpers.other import author
+from ....helpers.other import sepint
 
 from ....modules.users import load
 from ....modules.users import dump
@@ -52,6 +54,9 @@ from ....helpers.emojis import E_O
 from ....constants import EMBED_STD_COLOR
 
 
+group = Group('economy')
+sub_group = group.sub_group('flora')
+
 plugin = Plugin()
 
 ru_LL = 'Собрать бананы'
@@ -61,6 +66,8 @@ DESCRIPTION = locales.LocaleMap('floraCollect', ru=ru_LL, en_US=en_US_LL)
 
 
 @plugin.include
+@group.child
+@sub_group.child
 @kebab.ify
 @command(description=DESCRIPTION)
 class FloraCollect:
@@ -93,7 +100,7 @@ class FloraCollect:
             orangutan_collected
 
         self.embed.description = \
-            f'<@{self.uid}>, Вы собрали {E_B} `{collected}`шт.'
+            f'<@{self.uid}>, Вы собрали {E_B} `{sepint(collected)}`шт.'
 
         for representative in fauna.items():
             name = representative[0]
@@ -106,7 +113,7 @@ class FloraCollect:
             if _collected != 0:
 
                 self.embed.description += \
-                    f'\n+ {emoji} **{name}**: {E_B} `{_collected}`шт.'
+                    f'\n+ {emoji} **{name}**: {E_B} `{sepint(_collected)}`шт.'
 
             else:
                 continue
@@ -116,7 +123,7 @@ class FloraCollect:
         dump(self.users)
 
         self.embed.description += \
-            f'\n\n**Всего**: {E_B} `{total}`шт.'
+            f'\n\n**Всего**: {E_B} `{sepint(total)}`шт.'
 
 
     async def callback(self, ctx: Context) -> None:

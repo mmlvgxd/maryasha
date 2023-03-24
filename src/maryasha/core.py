@@ -29,9 +29,10 @@ from .modules.config import MaryashaConfig
 
 
 Maryasha = GatewayBot(MaryashaConfig.token, banner='src.maryasha')
+# Загрузка компонентов
 install(Maryasha)
 
 client = Client(Maryasha)
 
-client.plugins.load_folder('src.maryasha.plugins.utilities')
-client.plugins.load_folder('src.maryasha.plugins.economy')
+# Загрузка плагинов/команд
+client.plugins.load_folder('src.maryasha.plugins')

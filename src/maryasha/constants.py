@@ -26,14 +26,20 @@ from hikari import Activity
 
 from . import __version__
 
-
+# Пробел
+# Whitespace
 W = ' '
-
+# Статус & Активность бота
+# Status & Activity of the bot
 STATUS = Status.IDLE
 ACTIVITY = Activity(name=f'v{__version__}')
-
+# Путь до пользователей
+# Path to users
 USERS_PATH = './users.json'
-CONFIG_PATH = './config.json'
-
-EMBED_STD_COLOR = Color.from_rgb(255, 236, 130)
+# Названия для эмбеда
+# Title for embed
+EMBED_ERR_TITLE = 'Ошибка!'
+# Цвета для эмбедов
+# Colors for embeds
+EMBED_STD_COLOR = Color.from_rgb(159, 157, 207)
 EMBED_ERR_COLOR = Color.from_rgb(255, 75, 75)

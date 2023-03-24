@@ -25,6 +25,7 @@ from asyncio import gather
 from crescent import command
 from crescent import option
 
+from crescent import Group
 from crescent import Plugin
 from crescent import Context
 
@@ -39,10 +40,13 @@ from flare import text_select
 from flare import MessageContext
 
 from .....helpers.other import author
+from .....helpers.other import sepint
 
 from .....modules.users import load
 from .....modules.users import dump
 from .....modules.users import new
+
+from .....modules.economy import card_max_money
 
 from .....helpers.emojis import E_C
 from .....helpers.emojis import E_CC
@@ -50,6 +54,13 @@ from .....helpers.emojis import E_CC
 from .....constants import W
 from .....constants import EMBED_STD_COLOR
 
+from .....modules.errors import NegativeAmount
+from .....modules.errors import CardMoneyLimit
+from .....modules.errors import NotEnoughMoney
+
+
+group = Group('economy')
+sub_group = group.sub_group('finance')
 
 plugin = Plugin()
 
@@ -60,6 +71,8 @@ DESCRIPTION = locales.LocaleMap('cardsSend', ru=ru_LL, en_US=en_US_LL)
 
 
 @plugin.include
+@group.child
+@sub_group.child
 @kebab.ify
 @command(description=DESCRIPTION)
 class CardsSend:
@@ -90,6 +103,18 @@ class CardsSend:
 
             self.rnumbers = ctx.values[0]
 
+            MONEY = self.user.cards[self.numbers].money
+            RMONEY = self.ruser.cards[self.rnumbers].money
+            RLEVEL = self.ruser.cards[self.rnumbers].levels
+
+            if self.amount < 0:
+                raise NegativeAmount
+
+            if MONEY < self.amount:
+                raise NotEnoughMoney
+            if RMONEY < card_max_money(RLEVEL):
+                raise CardMoneyLimit
+
             self.user.cards[self.numbers].money -= self.amount
             self.ruser.cards[self.rnumbers].money += self.amount
 
@@ -97,7 +122,7 @@ class CardsSend:
 
             __embed.description = \
                 f'{E_CC} <@{self.uid}> отправил <@{self.ruid}>{W}' \
-                f'{E_C} `{self.amount}`$'
+                f'{E_C} `{sepint(self.amount)}`$'
 
             await ctx.respond(embed=__embed)
 

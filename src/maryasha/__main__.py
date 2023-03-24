@@ -20,10 +20,23 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+import os
+import uvloop
+
 from .core import Maryasha
 
 from .constants import STATUS
 from .constants import ACTIVITY
 
+# Если используется UNIX-подобная система
+# Можно заменить
+# Cтандартный asyncio с libuv uvloop
 
+# If a UNIX-like system is used
+# It is possible to replace
+# Еhe standard asyncio with libuv uvloop
+if os.name != 'nt':
+    uvloop.install()
+
+# Запуск бота
 Maryasha.run(activity=ACTIVITY, status=STATUS)

@@ -23,16 +23,29 @@
 from hikari import Embed
 from hikari import Member
 
-
+# Установить автора с именем, равным имени пользователя, и значком, равным аватару
+# Set author with name equals username and icon equals avatar
 def author(member: Member, embed: Embed) -> None:
     name = member.username
     icon = member.avatar_url
 
     embed.set_author(name=name, icon=icon)
 
-
+# Четное ли число
+# Is the number even
 def is_even(number: int) -> bool:
     if number & 1:
-        return False # Нечетное
+        # Нечетное
+        # Odd
+        return False
     else:
-        return True # Четное
+        # Четное
+        # Even
+        return True
+
+# Разделить число
+# Seperate number
+def sepint(number: int) -> str:
+    seperator = '_'
+
+    return f'{number:,}'.replace(',', seperator)

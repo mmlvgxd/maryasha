@@ -20,14 +20,31 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from typing import NewType
+class TrucksLimit(Exception):
+    def __init__(self) -> None:
+        super().__init__('Лимит грузовиков на пользователя - `10`шт.')
 
-# ID пользователя Discord
-# ID of Discord user
-ID = NewType('ID', str)
-# Номер карты
-# Numbers of the card
-CardNumbers = NewType('Numbers', str)
-# Номер грузовика
-# Numbfer of the truck
-TruckNumber = NewType('Number', str)
+
+class CardMoneyLimit(Exception):
+    def __init__(self) -> None:
+        super().__init__('Лимит денег на карте')
+
+
+class NegativeAmount(Exception):
+    def __init__(self) -> None:
+        super().__init__('Отрицательное количество денег')
+
+
+class NotEnoughBanana(Exception):
+    def __init__(self) -> None:
+        super().__init__('Недостаточно бананов')
+
+
+class NotEnoughMoney(Exception):
+    def __init__(self) -> None:
+        super().__init__('Недостаточно денег')
+
+
+class NotEnoughCash(Exception):
+    def __init__(self) -> None:
+        super().__init__('Недостаточно наличных')

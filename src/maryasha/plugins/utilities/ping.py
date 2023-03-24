@@ -22,16 +22,22 @@
 # SOFTWARE.
 from crescent import command
 
+from crescent import Group
 from crescent import Plugin
 from crescent import Context
 
 from crescent.ext import locales
 from crescent.ext import kebab
 
-from hikari import GatewayBot
+from hikari import Embed
+
+from ...helpers.other import author
+from ...constants import EMBED_STD_COLOR
 
 
-plugin = Plugin[GatewayBot, None]()
+group = Group('utilities')
+
+plugin = Plugin()
 
 ru_LL = 'Просмотр статуса бота'
 en_US_LL = 'View bot status'
@@ -40,8 +46,15 @@ DESCRIPTION = locales.LocaleMap('ping', ru=ru_LL, en_US=en_US_LL)
 
 
 @plugin.include
+@group.child
 @kebab.ify
 @command(description=DESCRIPTION)
 class Ping:
     async def callback(self, ctx: Context) -> None:
-        await ctx.respond('pong')
+        self.uid = str(ctx.user.id)
+        self.embed = Embed(title=self.TITLE, color=EMBED_STD_COLOR)
+        author(ctx.member, self.embed)
+
+        self.embed.description = 'pong'
+
+        await ctx.respond(embed=self.embed)

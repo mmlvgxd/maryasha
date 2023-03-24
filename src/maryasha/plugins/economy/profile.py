@@ -23,6 +23,7 @@
 from crescent import command
 from crescent import option
 
+from crescent import Group
 from crescent import Plugin
 from crescent import Context
 
@@ -32,6 +33,7 @@ from crescent.ext import kebab
 from crescent.ext import locales
 
 from ...helpers.other import author
+from ...helpers.other import sepint
 
 from ...modules.users import load
 from ...modules.users import new
@@ -55,6 +57,7 @@ from ...constants import W
 from ...constants import EMBED_STD_COLOR
 
 
+group = Group('economy')
 plugin = Plugin()
 
 ru_LL = 'Профиль пользователя'
@@ -64,6 +67,7 @@ DESCRIPTION = locales.LocaleMap('profile', ru=ru_LL, en_US=en_US_LL)
 
 
 @plugin.include
+@group.child
 @kebab.ify
 @command(description=DESCRIPTION)
 class Profile:
@@ -83,9 +87,9 @@ class Profile:
         ORANGUTAN = user.orangutan
 
         description = \
-            f'{E_M} **Обезьян**: `{MONKEY}`шт.\n' \
-            f'{E_G} **Горилл**: `{GORILLA}`шт.\n' \
-            f'{E_O} **Орангутанов**: `{ORANGUTAN}`шт.'
+            f'{E_M} **Обезьян**: `{sepint(MONKEY)}`шт.\n' \
+            f'{E_G} **Горилл**: `{sepint(GORILLA)}`шт.\n' \
+            f'{E_O} **Орангутанов**: `{sepint(ORANGUTAN)}`шт.'
 
         self.embed.description = description
 
@@ -93,7 +97,7 @@ class Profile:
     async def flora(self, user: User) -> None:
         BANANA = user.banana
 
-        description = f'{E_B} **Бананов**: `{BANANA}`шт.'
+        description = f'{E_B} **Бананов**: `{sepint(BANANA)}`шт.'
 
         self.embed.description = description
 
@@ -101,7 +105,7 @@ class Profile:
     async def finance(self, user: User) -> None:
         CASH = user.cash
 
-        description = f'{E_MWW} **Наличных**: `{CASH}`$'
+        description = f'{E_MWW} **Наличных**: `{sepint(CASH)}`$'
 
         if user.cards is not None:
 
@@ -116,8 +120,8 @@ class Profile:
 
                 value = \
                     f'{E_CC} ||{numbers}||\n' \
-                    f'> {E_PC} **Уровень**: `{level}`ур.\n' \
-                    f'> {E_C} **Денег**: `{money}`/`{max_money}`$'
+                    f'> {E_PC} **Уровень**: `{sepint(level)}`ур.\n' \
+                    f'> {E_C} **Денег**: `{sepint(money)}`/`{sepint(max_money)}`$'
 
                 self.embed.add_field(name='Карты', value=value)
 
@@ -142,9 +146,9 @@ class Profile:
 
             description += \
                 f'{E_T} **{name}**\n' \
-                f'> {E_PC} **Уровень**: `{level}`ур.\n' \
+                f'> {E_PC} **Уровень**: `{sepint(level)}`ур.\n' \
                 f'> {E_B} **Вместимость**:{W}' \
-                f'`{capacity}`/`{max_capacity}`шт.\n'
+                f'`{sepint(capacity)}`/`{sepint(max_capacity)}`шт.\n'
 
         self.embed.description = description
 

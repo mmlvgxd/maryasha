@@ -23,8 +23,8 @@
 from asyncio import gather
 
 from crescent import command
-from crescent import option
 
+from crescent import Group
 from crescent import Plugin
 from crescent import Context
 
@@ -38,6 +38,7 @@ from flare import text_select
 from flare import MessageContext
 
 from .....helpers.other import author
+from .....helpers.other import sepint
 
 from .....modules.users import load
 from .....modules.users import dump
@@ -51,7 +52,11 @@ from .....helpers.emojis import E_CC
 from .....constants import W
 from .....constants import EMBED_STD_COLOR
 
+from .....modules.errors import NotEnoughMoney
 
+
+group = Group('economy')
+sub_group = group.sub_group('finance')
 
 plugin = Plugin()
 
@@ -62,6 +67,8 @@ DESCRIPTION = locales.LocaleMap('cardsUp', ru=ru_LL, en_US=en_US_LL)
 
 
 @plugin.include
+@group.child
+@sub_group.child
 @kebab.ify
 @command(description=DESCRIPTION)
 class CardsUp:
@@ -98,10 +105,11 @@ class CardsUp:
 
                 self.embed.description = \
                     f'{E_CC} Вы повысили уровень карточки до{W}' \
-                    f'`{NEXT_LEVEL}` за {E_C} `{cost}`$'
+                    f'`{sepint(NEXT_LEVEL)}` за {E_C} `{sepint(cost)}`$'
 
                 await ctx.respond(embed=self.embed)
-
+            else:
+                raise NotEnoughMoney
 
         self.embed.description = f'{E_CC} Выберите Вашу карту'
         components = await gather(Row(menu()))

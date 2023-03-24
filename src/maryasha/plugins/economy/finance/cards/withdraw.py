@@ -25,6 +25,7 @@ from asyncio import gather
 from crescent import command
 from crescent import option
 
+from crescent import Group
 from crescent import Plugin
 from crescent import Context
 
@@ -38,16 +39,26 @@ from flare import text_select
 from flare import MessageContext
 
 from .....helpers.other import author
+from .....helpers.other import sepint
 
 from .....modules.users import load
 from .....modules.users import dump
 from .....modules.users import new
+
+from .....modules.economy import card_max_money
 
 from .....helpers.emojis import E_C
 from .....helpers.emojis import E_CC
 
 from .....constants import EMBED_STD_COLOR
 
+from .....modules.errors import NegativeAmount
+from .....modules.errors import CardMoneyLimit
+from .....modules.errors import NotEnoughMoney
+
+
+group = Group('economy')
+sub_group = group.sub_group('finance')
 
 plugin = Plugin()
 
@@ -58,6 +69,8 @@ DESCRIPTION = locales.LocaleMap('cardsWithdraw', ru=ru_LL, en_US=en_US_LL)
 
 
 @plugin.include
+@group.child
+@sub_group.child
 @kebab.ify
 @command(description=DESCRIPTION)
 class CardsWithdraw:
@@ -85,6 +98,12 @@ class CardsWithdraw:
             CARD = CARDS[numbers]
             LEVEL = CARD.level
 
+            if self.amount < 0:
+                raise NegativeAmount
+
+            elif self.amount > card_max_money(LEVEL):
+                raise CardMoneyLimit
+
             if self.amount <= CARD.money:
                 _embed = Embed(title=self.TITLE, color=EMBED_STD_COLOR)
                 author(ctx.member, _embed)
@@ -96,10 +115,11 @@ class CardsWithdraw:
 
                 _embed.description = \
                     f'{E_CC} Вы сняли {E_C}' \
-                    f'`{self.amount}`$ денег с карты'
+                    f'`{sepint(self.amount)}`$ денег с карты'
 
                 await ctx.respond(embed=_embed)
-
+            else:
+                raise NotEnoughMoney
 
         self.embed.description = f'{E_CC} Выберите Вашу карту'
         components = await gather(Row(menu()))

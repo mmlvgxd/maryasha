@@ -21,23 +21,18 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 from random import randint
-from asyncio import gather
 
 from crescent import command
 from crescent import option
 
+from crescent import Group
 from crescent import Plugin
 from crescent import Context
 
 from crescent.ext import locales
 from crescent.ext import kebab
 
-from flare import Row
-from flare import button
-from flare import MessageContext
-
 from hikari import Embed
-from hikari import ButtonStyle
 
 from ....helpers.other import author
 
@@ -56,6 +51,11 @@ from ....helpers.emojis import E_WCM
 from ....constants import W
 from ....constants import EMBED_STD_COLOR
 
+from ....modules.errors import NotEnoughBanana
+
+
+group = Group('economy')
+sub_group = group.sub_group('fauna')
 
 plugin = Plugin()
 
@@ -66,6 +66,8 @@ DESCRIPTION = locales.LocaleMap('faunaTame', ru=ru_LL, en_US=en_US_LL)
 
 
 @plugin.include
+@group.child
+@sub_group.child
 @kebab.ify
 @command(description=DESCRIPTION)
 class FaunaTame:
@@ -118,7 +120,7 @@ class FaunaTame:
                 f'{E_MW} {E_X} Вам не удалось приручить{W}' \
                 f':{self.representative}: **{locale}**!'
         else:
-            return
+            raise NotEnoughBanana
 
         dump(self.users)
 

@@ -24,6 +24,7 @@ from asyncio import gather
 
 from crescent import command
 
+from crescent import Group
 from crescent import Plugin
 from crescent import Context
 
@@ -37,6 +38,7 @@ from flare import text_select
 from flare import MessageContext
 
 from .....helpers.other import author
+from .....helpers.other import sepint
 from .....modules.economy import card_level_cost
 
 from .....modules.users import load
@@ -48,6 +50,9 @@ from .....helpers.emojis import E_CC
 from .....constants import EMBED_STD_COLOR
 
 
+group = Group('economy')
+sub_group = group.sub_group('finance')
+
 plugin = Plugin()
 
 ru_LL = 'Информация о картах'
@@ -57,6 +62,8 @@ DESCRIPTION = locales.LocaleMap('cardsInfo', ru=ru_LL, en_US=en_US_LL)
 
 
 @plugin.include
+@group.child
+@sub_group.child
 @kebab.ify
 @command(description=DESCRIPTION)
 class CardsInfo:
@@ -89,7 +96,7 @@ class CardsInfo:
 
             _embed.description = \
                 f'{E_C} **Стоимость повышения уровня**:' \
-                f'`{cost}`$'
+                f'`{sepint(cost)}`$'
 
             await ctx.respond(embed=_embed)
 

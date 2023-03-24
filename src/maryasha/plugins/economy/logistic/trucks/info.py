@@ -22,6 +22,7 @@
 # SOFTWARE.
 from crescent import command
 
+from crescent import Group
 from crescent import Plugin
 from crescent import Context
 
@@ -31,6 +32,7 @@ from crescent.ext import locales
 from hikari import Embed
 
 from .....helpers.other import author
+from .....helpers.other import sepint
 from .....modules.economy import truck_cost
 
 from .....modules.users import load
@@ -41,6 +43,11 @@ from .....helpers.emojis import E_MWW
 from .....constants import W
 from .....constants import EMBED_STD_COLOR
 
+from .....modules.errors import TrucksLimit
+
+
+group = Group('economy')
+sub_group = group.sub_group('logistic')
 
 plugin = Plugin()
 
@@ -51,6 +58,8 @@ DESCRIPTION = locales.LocaleMap('logisticTrucksInfo', ru=ru_LL, en_US=en_US_LL)
 
 
 @plugin.include
+@group.child
+@sub_group.child
 @kebab.ify
 @command(description=DESCRIPTION)
 class TrucksInfo:
@@ -61,12 +70,14 @@ class TrucksInfo:
         TRUCKS = self.user.trucks
         amount = len(TRUCKS.items()) + 1
 
-        if not amount > 10:
+        if amount <= 10:
             cost = truck_cost(amount)
 
             self.embed.description = \
                 f'{E_MWW} **Цена грузовика**:{W}' \
-                f'`{cost}`$'
+                f'`{sepint(cost)}`$'
+        else:
+            raise TrucksLimit
 
 
     async def callback(self, ctx: Context) -> None:

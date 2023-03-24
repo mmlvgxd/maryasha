@@ -1,4 +1,5 @@
+# Environment
 venv
 .env
-
+# Users
 users.json

@@ -23,6 +23,7 @@
 from crescent import command
 from crescent import option
 
+from crescent import Group
 from crescent import Plugin
 from crescent import Context
 
@@ -32,6 +33,7 @@ from crescent.ext import locales
 from hikari import Embed
 
 from .....helpers.other import author
+from .....helpers.other import sepint
 from .....modules.economy import truck_level_cost
 
 from .....modules.users import load
@@ -43,6 +45,11 @@ from .....helpers.emojis import E_T
 from .....constants import W
 from .....constants import EMBED_STD_COLOR
 
+from .....modules.errors import NotEnoughCash
+
+
+group = Group('economy')
+sub_group = group.sub_group('logistic')
 
 plugin = Plugin()
 
@@ -53,6 +60,8 @@ DESCRIPTION = locales.LocaleMap('logisticTrucksUp', ru=ru_LL, en_US=en_US_LL)
 
 
 @plugin.include
+@group.child
+@sub_group.child
 @kebab.ify
 @command(description=DESCRIPTION)
 class TrucksUp:
@@ -77,12 +86,14 @@ class TrucksUp:
             self.embed.description = \
                 f'<@{self.uid}>, Вы повысили уровень' \
                 f'{W}{E_T} **{name}** до `{NEXT_LEVEL}`ур.' \
-                f'{W} за `{cost}`$'
+                f'{W} за `{sepint(cost)}`$'
 
             self.user.trucks[self.number].level = NEXT_LEVEL
             self.user.cash -= cost
 
             dump(self.users)
+        else:
+            raise NotEnoughCash
 
 
     async def callback(self, ctx: Context) -> None:

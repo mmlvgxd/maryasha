@@ -23,6 +23,7 @@
 from crescent import command
 from crescent import option
 
+from crescent import Group
 from crescent import Plugin
 from crescent import Context
 
@@ -32,6 +33,7 @@ from crescent.ext import kebab
 from hikari import Embed
 
 from ....helpers.other import author
+from ....helpers.other import sepint
 
 from ....helpers.emojis import E_B
 from ....helpers.emojis import E_MW
@@ -43,6 +45,9 @@ from ....modules.fauna import Orangutan
 from ....constants import EMBED_STD_COLOR
 
 
+group = Group('economy')
+sub_group = group.sub_group('fauna')
+
 plugin = Plugin()
 
 ru_LL = 'Информация о фауне'
@@ -52,6 +57,8 @@ DESCRIPTION = locales.LocaleMap('faunaInfo', ru=ru_LL, en_US=en_US_LL)
 
 
 @plugin.include
+@group.child
+@sub_group.child
 @kebab.ify
 @command(description=DESCRIPTION)
 class FaunaInfo:
@@ -79,8 +86,8 @@ class FaunaInfo:
 
         evalue = \
             f':{self.representative}: `/fauna feed {self.representative}`\n' \
-            f'{E_B} **Стоимость приручения**: `{value}`шт.\n' \
-            f'{E_MW} **Вероятность приручения**: `1/{rarity}`'
+            f'{E_B} **Стоимость приручения**: `{sepint(value)}`шт.\n' \
+            f'{E_MW} **Вероятность приручения**: `1/{sepint(rarity)}`'
 
         self.embed.add_field(name=locale, value=evalue)
 

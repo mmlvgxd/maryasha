@@ -22,6 +22,7 @@
 # SOFTWARE.
 from crescent import command
 
+from crescent import Group
 from crescent import Plugin
 from crescent import Context
 
@@ -31,6 +32,7 @@ from crescent.ext import locales
 from hikari import Embed
 
 from .....helpers.other import author
+from .....helpers.other import sepint
 from .....modules.economy import truck_cost
 
 from .....modules.users import load
@@ -44,6 +46,12 @@ from .....helpers.emojis import E_T
 from .....constants import W
 from .....constants import EMBED_STD_COLOR
 
+from .....modules.errors import TrucksLimit
+from .....modules.errors import NotEnoughCash
+
+
+group = Group('economy')
+sub_group = group.sub_group('logistic')
 
 plugin = Plugin()
 
@@ -54,6 +62,8 @@ DESCRIPTION = locales.LocaleMap('logisticTrucksBuy', ru=ru_LL, en_US=en_US_LL)
 
 
 @plugin.include
+@group.child
+@sub_group.child
 @kebab.ify
 @command(description=DESCRIPTION)
 class TrucksBuy:
@@ -64,19 +74,23 @@ class TrucksBuy:
         TRUCKS = self.user.trucks
         amount = len(TRUCKS.items()) + 1
 
-        if not amount > 10:
+        if amount <= 10:
             cost = truck_cost(amount)
 
-            if not cost < self.user.cash:
+            if cost < self.user.cash:
                 self.user.trucks[str(amount)] = Truck()
 
                 self.embed.description = \
                     f'{E_T} Вы купили новый{W}' \
                     f'**Грузовик №{amount}**{W}' \
-                    f'за `{cost}`$'
+                    f'за `{sepint(cost)}`$'
 
                 self.user.cash -= cost
                 dump(self.users)
+            else:
+                raise NotEnoughCash
+        else:
+            raise TrucksLimit
 
 
     async def callback(self, ctx: Context) -> None:

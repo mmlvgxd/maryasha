@@ -22,6 +22,7 @@
 # SOFTWARE.
 from crescent import command
 
+from crescent import Group
 from crescent import Plugin
 from crescent import Context
 
@@ -31,6 +32,7 @@ from crescent.ext import locales
 from hikari import Embed
 
 from .....helpers.other import author
+from .....helpers.other import sepint
 from .....helpers.other import is_even
 from .....modules.economy import truck_max_capacity
 
@@ -46,6 +48,9 @@ from .....constants import W
 from .....constants import EMBED_STD_COLOR
 
 
+group = Group('economy')
+sub_group = group.sub_group('logistic')
+
 plugin = Plugin()
 
 ru_LL = 'Поместить бананы в грузовики'
@@ -55,6 +60,8 @@ DESCRIPTION = locales.LocaleMap('logisticTrucksPut', ru=ru_LL, en_US=en_US_LL)
 
 
 @plugin.include
+@group.child
+@sub_group.child
 @kebab.ify
 @command(description=DESCRIPTION)
 class TrucksPut:
@@ -82,7 +89,7 @@ class TrucksPut:
                 self.embed.description += \
                     f'{emoji} **Грузовик №{number}**{W}' \
                     f'полность заполнен{W}' \
-                    f'(`{capacity}`/`{max_capacity}`)\n'
+                    f'(`{sepint(capacity)}`/`{sepint(max_capacity)}`)\n'
 
                 continue
 
@@ -99,14 +106,14 @@ class TrucksPut:
                 BANANA -= 1
 
             self.embed.description += \
-                f'Вместили `{total}`/`{max_capacity}`{W}' \
+                f'Вместили `{sepint(total)}`/`{sepint(max_capacity)}`{W}' \
                 f'в {emoji} **Грузовик №{number}**\n'
 
             self.user.trucks[number].capacity += _total
 
         self.embed.description += \
             f'\nОсталось вместить {E_B}{W}' \
-            f'`{BANANA}`шт.'
+            f'`{sepint(BANANA)}`шт.'
 
 
         self.user.banana = BANANA

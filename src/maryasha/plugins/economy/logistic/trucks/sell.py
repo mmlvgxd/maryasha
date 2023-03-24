@@ -22,6 +22,7 @@
 # SOFTWARE.
 from crescent import command
 
+from crescent import Group
 from crescent import Plugin
 from crescent import Context
 
@@ -31,6 +32,7 @@ from crescent.ext import locales
 from hikari import Embed
 
 from .....helpers.other import author
+from .....helpers.other import sepint
 from .....helpers.other import is_even
 from .....modules.economy import truck_sell
 
@@ -46,6 +48,9 @@ from .....constants import W
 from .....constants import EMBED_STD_COLOR
 
 
+group = Group('economy')
+sub_group = group.sub_group('logistic')
+
 plugin = Plugin()
 
 ru_LL = 'Продать бананы из грузовика'
@@ -55,6 +60,8 @@ DESCRIPTION = locales.LocaleMap('logisticTrucksSell', ru=ru_LL, en_US=en_US_LL)
 
 
 @plugin.include
+@group.child
+@sub_group.child
 @kebab.ify
 @command(description=DESCRIPTION)
 class TrucksSell:
@@ -81,12 +88,12 @@ class TrucksSell:
 
             self.embed.description += \
                 f'{emoji} **Грузовик №{number}**{W}' \
-                f'продал :banana: `{sold}`шт.{W}' \
-                f'за`{earnings}`$\n'
+                f'продал :banana: `{sepint(sold)}`шт.{W}' \
+                f'за`{sepint(earnings)}`$\n'
 
         self.embed.description += \
             f'\n{E_MWW} **Всего продано**:{W}' \
-            f'`{TOTAL_EARNINGS}`$'
+            f'`{sepint(TOTAL_EARNINGS)}`$'
 
         self.user.cash += TOTAL_EARNINGS
 
