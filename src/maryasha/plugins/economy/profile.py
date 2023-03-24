@@ -37,6 +37,7 @@ from ...modules.users import load
 from ...modules.users import new
 
 from ...modules.economy import truck_max_capacity
+from ...modules.economy import card_max_money
 
 from ...modules.structs import User
 
@@ -111,10 +112,12 @@ class Profile:
                 level = properties.level
                 money = properties.money
 
+                max_money = card_max_money(level)
+
                 value = \
                     f'{E_CC} ||{numbers}||\n' \
                     f'> {E_PC} **Уровень**: `{level}`ур.\n' \
-                    f'> {E_C} **Денег**: `{money}`$'
+                    f'> {E_C} **Денег**: `{money}`/`{max_money}`$'
 
                 self.embed.add_field(name='Карты', value=value)
 

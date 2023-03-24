@@ -43,8 +43,6 @@ from .....modules.users import load
 from .....modules.users import dump
 from .....modules.users import new
 
-from .....modules.economy import card_max_money
-
 from .....helpers.emojis import E_C
 from .....helpers.emojis import E_CC
 
@@ -63,7 +61,7 @@ DESCRIPTION = locales.LocaleMap('cardsDeposit', ru=ru_LL, en_US=en_US_LL)
 @kebab.ify
 @command(description=DESCRIPTION)
 class CardsDeposit:
-    TITLE = 'Депозит'
+    TITLE = 'Положить'
 
     amount = option(int, 'Количество денег')
 
@@ -77,8 +75,8 @@ class CardsDeposit:
             options.append(card[0])
 
         @text_select(
-        placeholder='Карты',
-        options=options
+            placeholder='Карты',
+            options=options
         )
         async def menu(ctx: MessageContext):
             numbers = ctx.values[0]
@@ -103,7 +101,7 @@ class CardsDeposit:
                 await ctx.respond(embed=_embed)
 
 
-        self.embed.description = f'{E_CC} Выберите Вашу карту для депозита'
+        self.embed.description = f'{E_CC} Выберите Вашу карту'
         components = await gather(Row(menu()))
 
         return components

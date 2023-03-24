@@ -31,6 +31,7 @@ from crescent import Context
 from crescent.ext import locales
 from crescent.ext import kebab
 
+from hikari import User
 from hikari import Embed
 
 from flare import Row
@@ -43,8 +44,6 @@ from .....modules.users import load
 from .....modules.users import dump
 from .....modules.users import new
 
-from .....modules.economy import card_level_cost
-
 from .....helpers.emojis import E_C
 from .....helpers.emojis import E_CC
 
@@ -52,26 +51,56 @@ from .....constants import W
 from .....constants import EMBED_STD_COLOR
 
 
-
 plugin = Plugin()
 
-ru_LL = 'Повысить уровень карты'
-en_US_LL = 'Level up the card'
+ru_LL = 'Перевести деньги на карту'
+en_US_LL = 'Send money to a card'
 
-DESCRIPTION = locales.LocaleMap('cardsUp', ru=ru_LL, en_US=en_US_LL)
+DESCRIPTION = locales.LocaleMap('cardsSend', ru=ru_LL, en_US=en_US_LL)
 
 
 @plugin.include
 @kebab.ify
 @command(description=DESCRIPTION)
-class CardsUp:
-    TITLE = 'Повысить уровень'
+class CardsSend:
+    TITLE = 'Отправить'
+
+    reciever = option(User, 'Получатель')
+    amount = option(int, 'Количество денег')
 
 
     async def main(self) -> None:
         CARDS = self.user.cards
+        RCARDS = self.ruser.cards
 
-        options = []
+        options = list()
+        roptions = list()
+
+        for rcard in RCARDS.items():
+            roptions.append(rcard[0])
+
+
+        @text_select(
+            placeholder='Карты',
+            options=roptions
+        )
+        async def rmenu(ctx: MessageContext):
+            __embed = Embed(title=self.TITLE, color=EMBED_STD_COLOR)
+            author(ctx.member, __embed)
+
+            self.rnumbers = ctx.values[0]
+
+            self.user.cards[self.numbers].money -= self.amount
+            self.ruser.cards[self.rnumbers].money += self.amount
+
+            dump(self.users)
+
+            __embed.description = \
+                f'{E_CC} <@{self.uid}> отправил <@{self.ruid}>{W}' \
+                f'{E_C} `{self.amount}`$'
+
+            await ctx.respond(embed=__embed)
+
 
         for card in CARDS.items():
             options.append(card[0])
@@ -82,25 +111,15 @@ class CardsUp:
             options=options
         )
         async def menu(ctx: MessageContext):
-            numbers = ctx.values[0]
+            _embed = Embed(title=self.TITLE, color=EMBED_STD_COLOR)
+            author(ctx.member, _embed)
 
-            CARD = CARDS[numbers]
-            LEVEL = CARD.level
-            NEXT_LEVEL = LEVEL + 1
+            self.numbers = ctx.values[0]
 
-            cost = card_level_cost(NEXT_LEVEL)
+            _embed.description = f'{E_CC} Выберите карту получателя'
+            rcomponents = await gather(Row(rmenu()))
 
-            if cost <= CARD.money:
-                self.user.cards[numbers].level += 1
-                self.user.cards[numbers].money -= cost
-
-                dump(self.users)
-
-                self.embed.description = \
-                    f'{E_CC} Вы повысили уровень карточки до{W}' \
-                    f'`{NEXT_LEVEL}` за {E_C} `{cost}`$'
-
-                await ctx.respond(embed=self.embed)
+            await ctx.edit_response(embed=_embed, components=rcomponents)
 
 
         self.embed.description = f'{E_CC} Выберите Вашу карту'
@@ -111,13 +130,17 @@ class CardsUp:
 
     async def callback(self, ctx: Context) -> None:
         self.uid = str(ctx.user.id)
+        self.ruid = str(self.reciever.id)
 
         self.embed = Embed(title=self.TITLE, color=EMBED_STD_COLOR)
         author(ctx.member, self.embed)
 
         new(self.uid)
+        new(self.ruid)
+    
         self.users = load()
         self.user = self.users[self.uid]
+        self.ruser = self.users[self.ruid]
 
         components = await self.main()
 

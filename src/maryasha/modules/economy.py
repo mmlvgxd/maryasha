@@ -73,3 +73,10 @@ def card_max_money(level: int) -> int:
     multiplier = 10_000 # Множитель денег
 
     return int(level * multiplier)
+
+# Стоимость следующего уровня карты
+# Зависимая от текущего уровня
+def card_level_cost(level: int) -> int:
+    multiplier = 2_500 # Множитель стоимости
+
+    return int(level * multiplier)

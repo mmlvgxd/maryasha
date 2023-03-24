@@ -1,5 +1,10 @@
+# v2.0.8
+- Команда `cards-info`
+- Команда `cards-send`
+- Команда `cards-up`
+- Команда `cards-withdraw`
 # v2.0.7
-- Команда `deposit`
+- Команда `cards-deposit`
 - Исправления
 - Изменение `assets/banner.jpg`
 # v2.0.6
