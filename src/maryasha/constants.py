@@ -28,17 +28,17 @@ from . import __version__
 
 # Пробел
 # Whitespace
-W = ' '
+W = " "
 # Статус & Активность бота
 # Status & Activity of the bot
 STATUS = Status.IDLE
-ACTIVITY = Activity(name=f'v{__version__}')
+ACTIVITY = Activity(name=f"v{__version__}")
 # Путь до пользователей
 # Path to users
-USERS_PATH = './users.json'
+USERS_PATH = "./users.json"
 # Названия для эмбеда
 # Title for embed
-EMBED_ERR_TITLE = 'Ошибка!'
+EMBED_ERR_TITLE = "Ошибка!"
 # Цвета для эмбедов
 # Colors for embeds
 EMBED_STD_COLOR = Color.from_rgb(159, 157, 207)

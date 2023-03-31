@@ -33,4 +33,4 @@ load_dotenv()
 class MaryashaConfig:
     # Получение из загруженного
     # Раннее окружения ключ с токеном
-    token: str = environ['token']
+    token: str = environ["token"]

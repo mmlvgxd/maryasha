@@ -57,15 +57,15 @@ from .....modules.errors import CardMoneyLimit
 from .....modules.errors import NotEnoughMoney
 
 
-group = Group('economy')
-sub_group = group.sub_group('finance')
+group = Group("economy")
+sub_group = group.sub_group("finance")
 
 plugin = Plugin()
 
-ru_LL = 'Снять деньги с карты'
-en_US_LL = 'Withdraw money from the card'
+ru_LL = "Снять деньги с карты"
+en_US_LL = "Withdraw money from the card"
 
-DESCRIPTION = locales.LocaleMap('cardsWithdraw', ru=ru_LL, en_US=en_US_LL)
+DESCRIPTION = locales.LocaleMap("cardsWithdraw", ru=ru_LL, en_US=en_US_LL)
 
 
 @plugin.include
@@ -74,10 +74,9 @@ DESCRIPTION = locales.LocaleMap('cardsWithdraw', ru=ru_LL, en_US=en_US_LL)
 @kebab.ify
 @command(description=DESCRIPTION)
 class CardsWithdraw:
-    TITLE = 'Снять'
+    TITLE = "Снять"
 
-    amount = option(int, 'Количество денег')
-
+    amount = option(int, "Количество денег")
 
     async def main(self) -> None:
         CARDS = self.user.cards
@@ -87,11 +86,7 @@ class CardsWithdraw:
         for card in CARDS.items():
             options.append(card[0])
 
-
-        @text_select(
-            placeholder='Карты',
-            options=options
-        )
+        @text_select(placeholder="Карты", options=options)
         async def menu(ctx: MessageContext):
             numbers = ctx.values[0]
 
@@ -113,19 +108,18 @@ class CardsWithdraw:
 
                 dump(self.users)
 
-                _embed.description = \
-                    f'{E_CC} Вы сняли {E_C}' \
-                    f'`{sepint(self.amount)}`$ денег с карты'
+                _embed.description = (
+                    f"{E_CC} Вы сняли {E_C}" f"`{sepint(self.amount)}`$ денег с карты"
+                )
 
                 await ctx.respond(embed=_embed)
             else:
                 raise NotEnoughMoney
 
-        self.embed.description = f'{E_CC} Выберите Вашу карту'
+        self.embed.description = f"{E_CC} Выберите Вашу карту"
         components = await gather(Row(menu()))
 
         return components
-
 
     async def callback(self, ctx: Context) -> None:
         self.uid = str(ctx.user.id)

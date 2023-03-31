@@ -45,15 +45,15 @@ from ....modules.fauna import Orangutan
 from ....constants import EMBED_STD_COLOR
 
 
-group = Group('economy')
-sub_group = group.sub_group('fauna')
+group = Group("economy")
+sub_group = group.sub_group("fauna")
 
 plugin = Plugin()
 
-ru_LL = 'Информация о фауне'
-en_US_LL = 'Information about fauna'
+ru_LL = "Информация о фауне"
+en_US_LL = "Information about fauna"
 
-DESCRIPTION = locales.LocaleMap('faunaInfo', ru=ru_LL, en_US=en_US_LL)
+DESCRIPTION = locales.LocaleMap("faunaInfo", ru=ru_LL, en_US=en_US_LL)
 
 
 @plugin.include
@@ -62,21 +62,20 @@ DESCRIPTION = locales.LocaleMap('faunaInfo', ru=ru_LL, en_US=en_US_LL)
 @kebab.ify
 @command(description=DESCRIPTION)
 class FaunaInfo:
-    TITLE = 'Фауна'
+    TITLE = "Фауна"
 
-    representative = option(str, 'Тип', choices=[
-        (Monkey.locale, 'monkey'),
-        (Gorilla.locale, 'gorilla'),
-        (Orangutan.locale, 'orangutan')
-    ])
-
+    representative = option(
+        str,
+        "Тип",
+        choices=[
+            (Monkey.locale, "monkey"),
+            (Gorilla.locale, "gorilla"),
+            (Orangutan.locale, "orangutan"),
+        ],
+    )
 
     async def main(self) -> None:
-        fauna = {
-            'monkey': Monkey,
-            'gorilla': Gorilla,
-            'orangutan': Orangutan
-        }
+        fauna = {"monkey": Monkey, "gorilla": Gorilla, "orangutan": Orangutan}
 
         _representative = fauna[self.representative]
 
@@ -84,13 +83,13 @@ class FaunaInfo:
         value = _representative.value
         rarity = _representative.rarity
 
-        evalue = \
-            f':{self.representative}: `/fauna feed {self.representative}`\n' \
-            f'{E_B} **Стоимость приручения**: `{sepint(value)}`шт.\n' \
-            f'{E_MW} **Вероятность приручения**: `1/{sepint(rarity)}`'
+        evalue = (
+            f":{self.representative}: `/fauna feed {self.representative}`\n"
+            f"{E_B} **Стоимость приручения**: `{sepint(value)}`шт.\n"
+            f"{E_MW} **Вероятность приручения**: `1/{sepint(rarity)}`"
+        )
 
         self.embed.add_field(name=locale, value=evalue)
-
 
     async def callback(self, ctx: Context) -> None:
         self.uid = str(ctx.user.id)

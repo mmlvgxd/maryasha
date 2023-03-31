@@ -55,15 +55,15 @@ from .....constants import EMBED_STD_COLOR
 from .....modules.errors import NotEnoughMoney
 
 
-group = Group('economy')
-sub_group = group.sub_group('finance')
+group = Group("economy")
+sub_group = group.sub_group("finance")
 
 plugin = Plugin()
 
-ru_LL = 'Повысить уровень карты'
-en_US_LL = 'Level up the card'
+ru_LL = "Повысить уровень карты"
+en_US_LL = "Level up the card"
 
-DESCRIPTION = locales.LocaleMap('cardsUp', ru=ru_LL, en_US=en_US_LL)
+DESCRIPTION = locales.LocaleMap("cardsUp", ru=ru_LL, en_US=en_US_LL)
 
 
 @plugin.include
@@ -72,8 +72,7 @@ DESCRIPTION = locales.LocaleMap('cardsUp', ru=ru_LL, en_US=en_US_LL)
 @kebab.ify
 @command(description=DESCRIPTION)
 class CardsUp:
-    TITLE = 'Повысить уровень'
-
+    TITLE = "Повысить уровень"
 
     async def main(self) -> None:
         CARDS = self.user.cards
@@ -83,11 +82,7 @@ class CardsUp:
         for card in CARDS.items():
             options.append(card[0])
 
-
-        @text_select(
-            placeholder='Карты',
-            options=options
-        )
+        @text_select(placeholder="Карты", options=options)
         async def menu(ctx: MessageContext):
             numbers = ctx.values[0]
 
@@ -103,19 +98,19 @@ class CardsUp:
 
                 dump(self.users)
 
-                self.embed.description = \
-                    f'{E_CC} Вы повысили уровень карточки до{W}' \
-                    f'`{sepint(NEXT_LEVEL)}` за {E_C} `{sepint(cost)}`$'
+                self.embed.description = (
+                    f"{E_CC} Вы повысили уровень карточки до{W}"
+                    f"`{sepint(NEXT_LEVEL)}` за {E_C} `{sepint(cost)}`$"
+                )
 
                 await ctx.respond(embed=self.embed)
             else:
                 raise NotEnoughMoney
 
-        self.embed.description = f'{E_CC} Выберите Вашу карту'
+        self.embed.description = f"{E_CC} Выберите Вашу карту"
         components = await gather(Row(menu()))
 
         return components
-
 
     async def callback(self, ctx: Context) -> None:
         self.uid = str(ctx.user.id)

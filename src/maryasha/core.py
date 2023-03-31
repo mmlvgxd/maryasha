@@ -28,11 +28,11 @@ from hikari import GatewayBot
 from .modules.config import MaryashaConfig
 
 
-Maryasha = GatewayBot(MaryashaConfig.token, banner='src.maryasha')
+Maryasha = GatewayBot(MaryashaConfig.token, banner=None)
 # Загрузка компонентов
 install(Maryasha)
 
 client = Client(Maryasha)
 
 # Загрузка плагинов/команд
-client.plugins.load_folder('src.maryasha.plugins')
+client.plugins.load_folder("src.maryasha.plugins")

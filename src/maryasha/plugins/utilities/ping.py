@@ -35,14 +35,14 @@ from ...helpers.other import author
 from ...constants import EMBED_STD_COLOR
 
 
-group = Group('utilities')
+group = Group("utilities")
 
 plugin = Plugin()
 
-ru_LL = 'Просмотр статуса бота'
-en_US_LL = 'View bot status'
+ru_LL = "Просмотр статуса бота"
+en_US_LL = "View bot status"
 
-DESCRIPTION = locales.LocaleMap('ping', ru=ru_LL, en_US=en_US_LL)
+DESCRIPTION = locales.LocaleMap("ping", ru=ru_LL, en_US=en_US_LL)
 
 
 @plugin.include
@@ -55,6 +55,6 @@ class Ping:
         self.embed = Embed(title=self.TITLE, color=EMBED_STD_COLOR)
         author(ctx.member, self.embed)
 
-        self.embed.description = 'pong'
+        self.embed.description = "pong"
 
         await ctx.respond(embed=self.embed)

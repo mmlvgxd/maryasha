@@ -54,15 +54,15 @@ from ....helpers.emojis import E_O
 from ....constants import EMBED_STD_COLOR
 
 
-group = Group('economy')
-sub_group = group.sub_group('flora')
+group = Group("economy")
+sub_group = group.sub_group("flora")
 
 plugin = Plugin()
 
-ru_LL = 'Собрать бананы'
-en_US_LL = 'Collect bananas'
+ru_LL = "Собрать бананы"
+en_US_LL = "Collect bananas"
 
-DESCRIPTION = locales.LocaleMap('floraCollect', ru=ru_LL, en_US=en_US_LL)
+DESCRIPTION = locales.LocaleMap("floraCollect", ru=ru_LL, en_US=en_US_LL)
 
 
 @plugin.include
@@ -71,8 +71,7 @@ DESCRIPTION = locales.LocaleMap('floraCollect', ru=ru_LL, en_US=en_US_LL)
 @kebab.ify
 @command(description=DESCRIPTION)
 class FloraCollect:
-    TITLE = 'Сбор'
-
+    TITLE = "Сбор"
 
     async def main(self) -> None:
         self.embed.description = str()
@@ -88,19 +87,16 @@ class FloraCollect:
         orangutan_collected = int(COM * ORANGUTAN * collected)
 
         fauna = {
-            'Обезьяны': [monkey_collected, E_M],
-            'Гориллы': [gorilla_collected, E_G],
-            'Орангутаны': [orangutan_collected, E_O],
+            "Обезьяны": [monkey_collected, E_M],
+            "Гориллы": [gorilla_collected, E_G],
+            "Орангутаны": [orangutan_collected, E_O],
         }
 
-        total = \
-            collected + \
-            monkey_collected + \
-            gorilla_collected + \
-            orangutan_collected
+        total = collected + monkey_collected + gorilla_collected + orangutan_collected
 
-        self.embed.description = \
-            f'<@{self.uid}>, Вы собрали {E_B} `{sepint(collected)}`шт.'
+        self.embed.description = (
+            f"<@{self.uid}>, Вы собрали {E_B} `{sepint(collected)}`шт."
+        )
 
         for representative in fauna.items():
             name = representative[0]
@@ -111,9 +107,9 @@ class FloraCollect:
             emoji = properties[1]
 
             if _collected != 0:
-
-                self.embed.description += \
-                    f'\n+ {emoji} **{name}**: {E_B} `{sepint(_collected)}`шт.'
+                self.embed.description += (
+                    f"\n+ {emoji} **{name}**: {E_B} `{sepint(_collected)}`шт."
+                )
 
             else:
                 continue
@@ -122,9 +118,7 @@ class FloraCollect:
 
         dump(self.users)
 
-        self.embed.description += \
-            f'\n\n**Всего**: {E_B} `{sepint(total)}`шт.'
-
+        self.embed.description += f"\n\n**Всего**: {E_B} `{sepint(total)}`шт."
 
     async def callback(self, ctx: Context) -> None:
         self.uid = str(ctx.user.id)

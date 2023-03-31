@@ -50,15 +50,15 @@ from .....helpers.emojis import E_CC
 from .....constants import EMBED_STD_COLOR
 
 
-group = Group('economy')
-sub_group = group.sub_group('finance')
+group = Group("economy")
+sub_group = group.sub_group("finance")
 
 plugin = Plugin()
 
-ru_LL = 'Информация о картах'
-en_US_LL = 'Information about cards'
+ru_LL = "Информация о картах"
+en_US_LL = "Information about cards"
 
-DESCRIPTION = locales.LocaleMap('cardsInfo', ru=ru_LL, en_US=en_US_LL)
+DESCRIPTION = locales.LocaleMap("cardsInfo", ru=ru_LL, en_US=en_US_LL)
 
 
 @plugin.include
@@ -67,8 +67,7 @@ DESCRIPTION = locales.LocaleMap('cardsInfo', ru=ru_LL, en_US=en_US_LL)
 @kebab.ify
 @command(description=DESCRIPTION)
 class CardsInfo:
-    TITLE = 'Информация'
-
+    TITLE = "Информация"
 
     async def main(self) -> None:
         CARDS = self.user.cards
@@ -78,11 +77,7 @@ class CardsInfo:
         for card in CARDS.items():
             options.append(card[0])
 
-
-        @text_select(
-            placeholder='Карты',
-            options=options
-        )
+        @text_select(placeholder="Карты", options=options)
         async def menu(ctx: MessageContext):
             _embed = Embed(title=self.TITLE, color=EMBED_STD_COLOR)
             author(ctx.member, _embed)
@@ -94,18 +89,16 @@ class CardsInfo:
 
             cost = card_level_cost(NEXT_LEVEL)
 
-            _embed.description = \
-                f'{E_C} **Стоимость повышения уровня**:' \
-                f'`{sepint(cost)}`$'
+            _embed.description = (
+                f"{E_C} **Стоимость повышения уровня**:" f"`{sepint(cost)}`$"
+            )
 
             await ctx.respond(embed=_embed)
 
-
-        self.embed.description = f'{E_CC} Выберите Вашу карту'
+        self.embed.description = f"{E_CC} Выберите Вашу карту"
         components = await gather(Row(menu()))
 
         return components
-
 
     async def callback(self, ctx: Context) -> None:
         self.uid = str(ctx.user.id)

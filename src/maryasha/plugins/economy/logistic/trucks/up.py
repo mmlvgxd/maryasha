@@ -48,15 +48,15 @@ from .....constants import EMBED_STD_COLOR
 from .....modules.errors import NotEnoughCash
 
 
-group = Group('economy')
-sub_group = group.sub_group('logistic')
+group = Group("economy")
+sub_group = group.sub_group("logistic")
 
 plugin = Plugin()
 
-ru_LL = 'Повысить уровень грузовика'
-en_US_LL = 'Level up the truck'
+ru_LL = "Повысить уровень грузовика"
+en_US_LL = "Level up the truck"
 
-DESCRIPTION = locales.LocaleMap('logisticTrucksUp', ru=ru_LL, en_US=en_US_LL)
+DESCRIPTION = locales.LocaleMap("logisticTrucksUp", ru=ru_LL, en_US=en_US_LL)
 
 
 @plugin.include
@@ -65,10 +65,9 @@ DESCRIPTION = locales.LocaleMap('logisticTrucksUp', ru=ru_LL, en_US=en_US_LL)
 @kebab.ify
 @command(description=DESCRIPTION)
 class TrucksUp:
-    TITLE = 'Повышение уровня'
+    TITLE = "Повышение уровня"
 
-    number = option(str, 'Номер грузовика', default=None)
-
+    number = option(str, "Номер грузовика", default=None)
 
     async def main(self) -> None:
         CASH = self.user.cash
@@ -81,12 +80,13 @@ class TrucksUp:
         cost = truck_level_cost(NEXT_LEVEL)
 
         if CASH > cost:
-            name = f'Грузовик №{self.number}'
+            name = f"Грузовик №{self.number}"
 
-            self.embed.description = \
-                f'<@{self.uid}>, Вы повысили уровень' \
-                f'{W}{E_T} **{name}** до `{NEXT_LEVEL}`ур.' \
-                f'{W} за `{sepint(cost)}`$'
+            self.embed.description = (
+                f"<@{self.uid}>, Вы повысили уровень"
+                f"{W}{E_T} **{name}** до `{NEXT_LEVEL}`ур."
+                f"{W} за `{sepint(cost)}`$"
+            )
 
             self.user.trucks[self.number].level = NEXT_LEVEL
             self.user.cash -= cost
@@ -94,7 +94,6 @@ class TrucksUp:
             dump(self.users)
         else:
             raise NotEnoughCash
-
 
     async def callback(self, ctx: Context) -> None:
         self.uid = str(ctx.user.id)

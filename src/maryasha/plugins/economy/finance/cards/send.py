@@ -59,15 +59,15 @@ from .....modules.errors import CardMoneyLimit
 from .....modules.errors import NotEnoughMoney
 
 
-group = Group('economy')
-sub_group = group.sub_group('finance')
+group = Group("economy")
+sub_group = group.sub_group("finance")
 
 plugin = Plugin()
 
-ru_LL = 'Перевести деньги на карту'
-en_US_LL = 'Send money to a card'
+ru_LL = "Перевести деньги на карту"
+en_US_LL = "Send money to a card"
 
-DESCRIPTION = locales.LocaleMap('cardsSend', ru=ru_LL, en_US=en_US_LL)
+DESCRIPTION = locales.LocaleMap("cardsSend", ru=ru_LL, en_US=en_US_LL)
 
 
 @plugin.include
@@ -76,11 +76,10 @@ DESCRIPTION = locales.LocaleMap('cardsSend', ru=ru_LL, en_US=en_US_LL)
 @kebab.ify
 @command(description=DESCRIPTION)
 class CardsSend:
-    TITLE = 'Отправить'
+    TITLE = "Отправить"
 
-    reciever = option(User, 'Получатель')
-    amount = option(int, 'Количество денег')
-
+    reciever = option(User, "Получатель")
+    amount = option(int, "Количество денег")
 
     async def main(self) -> None:
         CARDS = self.user.cards
@@ -92,11 +91,7 @@ class CardsSend:
         for rcard in RCARDS.items():
             roptions.append(rcard[0])
 
-
-        @text_select(
-            placeholder='Карты',
-            options=roptions
-        )
+        @text_select(placeholder="Карты", options=roptions)
         async def rmenu(ctx: MessageContext):
             __embed = Embed(title=self.TITLE, color=EMBED_STD_COLOR)
             author(ctx.member, __embed)
@@ -105,14 +100,14 @@ class CardsSend:
 
             MONEY = self.user.cards[self.numbers].money
             RMONEY = self.ruser.cards[self.rnumbers].money
-            RLEVEL = self.ruser.cards[self.rnumbers].levels
+            RLEVEL = self.ruser.cards[self.rnumbers].level
 
             if self.amount < 0:
                 raise NegativeAmount
 
             if MONEY < self.amount:
                 raise NotEnoughMoney
-            if RMONEY < card_max_money(RLEVEL):
+            if RMONEY + self.amount > card_max_money(RLEVEL):
                 raise CardMoneyLimit
 
             self.user.cards[self.numbers].money -= self.amount
@@ -120,38 +115,32 @@ class CardsSend:
 
             dump(self.users)
 
-            __embed.description = \
-                f'{E_CC} <@{self.uid}> отправил <@{self.ruid}>{W}' \
-                f'{E_C} `{sepint(self.amount)}`$'
+            __embed.description = (
+                f"{E_CC} <@{self.uid}> отправил <@{self.ruid}>{W}"
+                f"{E_C} `{sepint(self.amount)}`$"
+            )
 
             await ctx.respond(embed=__embed)
-
 
         for card in CARDS.items():
             options.append(card[0])
 
-
-        @text_select(
-            placeholder='Карты',
-            options=options
-        )
+        @text_select(placeholder="Карты", options=options)
         async def menu(ctx: MessageContext):
             _embed = Embed(title=self.TITLE, color=EMBED_STD_COLOR)
             author(ctx.member, _embed)
 
             self.numbers = ctx.values[0]
 
-            _embed.description = f'{E_CC} Выберите карту получателя'
+            _embed.description = f"{E_CC} Выберите карту получателя"
             rcomponents = await gather(Row(rmenu()))
 
             await ctx.edit_response(embed=_embed, components=rcomponents)
 
-
-        self.embed.description = f'{E_CC} Выберите Вашу карту'
+        self.embed.description = f"{E_CC} Выберите Вашу карту"
         components = await gather(Row(menu()))
 
         return components
-
 
     async def callback(self, ctx: Context) -> None:
         self.uid = str(ctx.user.id)
@@ -162,7 +151,7 @@ class CardsSend:
 
         new(self.uid)
         new(self.ruid)
-    
+
         self.users = load()
         self.user = self.users[self.uid]
         self.ruser = self.users[self.ruid]

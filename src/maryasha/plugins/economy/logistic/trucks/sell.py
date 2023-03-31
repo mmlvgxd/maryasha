@@ -48,15 +48,15 @@ from .....constants import W
 from .....constants import EMBED_STD_COLOR
 
 
-group = Group('economy')
-sub_group = group.sub_group('logistic')
+group = Group("economy")
+sub_group = group.sub_group("logistic")
 
 plugin = Plugin()
 
-ru_LL = 'Продать бананы из грузовика'
-en_US_LL = 'Sell bananas from the truck'
+ru_LL = "Продать бананы из грузовика"
+en_US_LL = "Sell bananas from the truck"
 
-DESCRIPTION = locales.LocaleMap('logisticTrucksSell', ru=ru_LL, en_US=en_US_LL)
+DESCRIPTION = locales.LocaleMap("logisticTrucksSell", ru=ru_LL, en_US=en_US_LL)
 
 
 @plugin.include
@@ -65,8 +65,7 @@ DESCRIPTION = locales.LocaleMap('logisticTrucksSell', ru=ru_LL, en_US=en_US_LL)
 @kebab.ify
 @command(description=DESCRIPTION)
 class TrucksSell:
-    TITLE = 'Продажа'
-
+    TITLE = "Продажа"
 
     async def main(self) -> None:
         TRUCKS = self.user.trucks
@@ -86,19 +85,19 @@ class TrucksSell:
 
             emoji = E_AL if is_even(int(number)) else E_T
 
-            self.embed.description += \
-                f'{emoji} **Грузовик №{number}**{W}' \
-                f'продал :banana: `{sepint(sold)}`шт.{W}' \
-                f'за`{sepint(earnings)}`$\n'
+            self.embed.description += (
+                f"{emoji} **Грузовик №{number}**{W}"
+                f"продал :banana: `{sepint(sold)}`шт.{W}"
+                f"за`{sepint(earnings)}`$\n"
+            )
 
-        self.embed.description += \
-            f'\n{E_MWW} **Всего продано**:{W}' \
-            f'`{sepint(TOTAL_EARNINGS)}`$'
+        self.embed.description += (
+            f"\n{E_MWW} **Всего продано**:{W}" f"`{sepint(TOTAL_EARNINGS)}`$"
+        )
 
         self.user.cash += TOTAL_EARNINGS
 
         dump(self.users)
-
 
     async def callback(self, ctx: Context) -> None:
         self.uid = str(ctx.user.id)

@@ -46,15 +46,15 @@ from .....constants import EMBED_STD_COLOR
 from .....modules.errors import TrucksLimit
 
 
-group = Group('economy')
-sub_group = group.sub_group('logistic')
+group = Group("economy")
+sub_group = group.sub_group("logistic")
 
 plugin = Plugin()
 
-ru_LL = 'Информация о грузовиках'
-en_US_LL = 'Information about trucks'
+ru_LL = "Информация о грузовиках"
+en_US_LL = "Information about trucks"
 
-DESCRIPTION = locales.LocaleMap('logisticTrucksInfo', ru=ru_LL, en_US=en_US_LL)
+DESCRIPTION = locales.LocaleMap("logisticTrucksInfo", ru=ru_LL, en_US=en_US_LL)
 
 
 @plugin.include
@@ -63,8 +63,7 @@ DESCRIPTION = locales.LocaleMap('logisticTrucksInfo', ru=ru_LL, en_US=en_US_LL)
 @kebab.ify
 @command(description=DESCRIPTION)
 class TrucksInfo:
-    TITLE = 'Информация'
-
+    TITLE = "Информация"
 
     async def main(self) -> None:
         TRUCKS = self.user.trucks
@@ -73,12 +72,11 @@ class TrucksInfo:
         if amount <= 10:
             cost = truck_cost(amount)
 
-            self.embed.description = \
-                f'{E_MWW} **Цена грузовика**:{W}' \
-                f'`{sepint(cost)}`$'
+            self.embed.description = (
+                f"{E_MWW} **Цена грузовика**:{W}" f"`{sepint(cost)}`$"
+            )
         else:
             raise TrucksLimit
-
 
     async def callback(self, ctx: Context) -> None:
         self.uid = str(ctx.user.id)

@@ -48,15 +48,15 @@ from .....constants import W
 from .....constants import EMBED_STD_COLOR
 
 
-group = Group('economy')
-sub_group = group.sub_group('logistic')
+group = Group("economy")
+sub_group = group.sub_group("logistic")
 
 plugin = Plugin()
 
-ru_LL = 'Поместить бананы в грузовики'
-en_US_LL = 'Put bananas in trucks'
+ru_LL = "Поместить бананы в грузовики"
+en_US_LL = "Put bananas in trucks"
 
-DESCRIPTION = locales.LocaleMap('logisticTrucksPut', ru=ru_LL, en_US=en_US_LL)
+DESCRIPTION = locales.LocaleMap("logisticTrucksPut", ru=ru_LL, en_US=en_US_LL)
 
 
 @plugin.include
@@ -65,8 +65,7 @@ DESCRIPTION = locales.LocaleMap('logisticTrucksPut', ru=ru_LL, en_US=en_US_LL)
 @kebab.ify
 @command(description=DESCRIPTION)
 class TrucksPut:
-    TITLE = 'Вмещение'
-
+    TITLE = "Вмещение"
 
     async def main(self) -> None:
         BANANA = self.user.banana
@@ -86,10 +85,11 @@ class TrucksPut:
             emoji = E_AL if is_even(int(number)) else E_T
 
             if capacity >= max_capacity:
-                self.embed.description += \
-                    f'{emoji} **Грузовик №{number}**{W}' \
-                    f'полность заполнен{W}' \
-                    f'(`{sepint(capacity)}`/`{sepint(max_capacity)}`)\n'
+                self.embed.description += (
+                    f"{emoji} **Грузовик №{number}**{W}"
+                    f"полность заполнен{W}"
+                    f"(`{sepint(capacity)}`/`{sepint(max_capacity)}`)\n"
+                )
 
                 continue
 
@@ -97,7 +97,6 @@ class TrucksPut:
             _total = 0
 
             while BANANA > 0:
-
                 if total == max_capacity:
                     break
 
@@ -105,21 +104,20 @@ class TrucksPut:
                 _total += 1
                 BANANA -= 1
 
-            self.embed.description += \
-                f'Вместили `{sepint(total)}`/`{sepint(max_capacity)}`{W}' \
-                f'в {emoji} **Грузовик №{number}**\n'
+            self.embed.description += (
+                f"Вместили `{sepint(total)}`/`{sepint(max_capacity)}`{W}"
+                f"в {emoji} **Грузовик №{number}**\n"
+            )
 
             self.user.trucks[number].capacity += _total
 
-        self.embed.description += \
-            f'\nОсталось вместить {E_B}{W}' \
-            f'`{sepint(BANANA)}`шт.'
-
+        self.embed.description += (
+            f"\nОсталось вместить {E_B}{W}" f"`{sepint(BANANA)}`шт."
+        )
 
         self.user.banana = BANANA
 
         dump(self.users)
-
 
     async def callback(self, ctx: Context) -> None:
         self.uid = str(ctx.user.id)

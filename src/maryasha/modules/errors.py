@@ -22,29 +22,29 @@
 # SOFTWARE.
 class TrucksLimit(Exception):
     def __init__(self) -> None:
-        super().__init__('Лимит грузовиков на пользователя - `10`шт.')
+        super().__init__("Лимит грузовиков на пользователя - `10`шт.")
 
 
 class CardMoneyLimit(Exception):
     def __init__(self) -> None:
-        super().__init__('Лимит денег на карте')
+        super().__init__("Лимит денег на карте")
 
 
 class NegativeAmount(Exception):
     def __init__(self) -> None:
-        super().__init__('Отрицательное количество денег')
+        super().__init__("Отрицательное количество денег")
 
 
 class NotEnoughBanana(Exception):
     def __init__(self) -> None:
-        super().__init__('Недостаточно бананов')
+        super().__init__("Недостаточно бананов")
 
 
 class NotEnoughMoney(Exception):
     def __init__(self) -> None:
-        super().__init__('Недостаточно денег')
+        super().__init__("Недостаточно денег")
 
 
 class NotEnoughCash(Exception):
     def __init__(self) -> None:
-        super().__init__('Недостаточно наличных')
+        super().__init__("Недостаточно наличных")

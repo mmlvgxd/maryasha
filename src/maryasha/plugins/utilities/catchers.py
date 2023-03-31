@@ -46,7 +46,7 @@ embed = Embed(title=EMBED_ERR_TITLE, color=EMBED_ERR_COLOR)
 @plugin.include
 @catch_command(NotEnoughBanana)
 async def not_enough_banana_catcher(exc: NotEnoughBanana, ctx: Context) -> None:
-    embed.description = f'`NotEnough`: {exc}'
+    embed.description = f"`NotEnough`: {exc}"
 
     await ctx.respond(embed=embed)
 
@@ -54,7 +54,7 @@ async def not_enough_banana_catcher(exc: NotEnoughBanana, ctx: Context) -> None:
 @plugin.include
 @catch_command(NotEnoughMoney)
 async def not_enough_money_catcher(exc: NotEnoughMoney, ctx: Context) -> None:
-    embed.description = f'`NotEnoughMoney`: {exc}'
+    embed.description = f"`NotEnoughMoney`: {exc}"
 
     await ctx.respond(embed=embed)
 
@@ -62,7 +62,7 @@ async def not_enough_money_catcher(exc: NotEnoughMoney, ctx: Context) -> None:
 @plugin.include
 @catch_command(NotEnoughCash)
 async def not_enough_cash_catcher(exc: NotEnoughCash, ctx: Context) -> None:
-    embed.description = f'`NotEnoughCash`: {exc}'
+    embed.description = f"`NotEnoughCash`: {exc}"
 
     await ctx.respond(embed=embed)
 
@@ -70,7 +70,7 @@ async def not_enough_cash_catcher(exc: NotEnoughCash, ctx: Context) -> None:
 @plugin.include
 @catch_command(CardMoneyLimit)
 async def card_money_limit_catcher(exc: CardMoneyLimit, ctx: Context) -> None:
-    embed.description = f'`CardMoneyLimit`: {exc}'
+    embed.description = f"`CardMoneyLimit`: {exc}"
 
     await ctx.respond(embed=embed)
 
@@ -78,7 +78,7 @@ async def card_money_limit_catcher(exc: CardMoneyLimit, ctx: Context) -> None:
 @plugin.include
 @catch_command(TrucksLimit)
 async def trucks_limit_catcher(exc: TrucksLimit, ctx: Context) -> None:
-    embed.description = f'`TrucksLimit`: {exc}'
+    embed.description = f"`TrucksLimit`: {exc}"
 
     await ctx.respond(embed=embed)
 
@@ -86,6 +86,6 @@ async def trucks_limit_catcher(exc: TrucksLimit, ctx: Context) -> None:
 @plugin.include
 @catch_command(NegativeAmount)
 async def negative_amount_catcher(exc: NegativeAmount, ctx: Context) -> None:
-    embed.description = f'`NegativeAmount`: {exc}'
+    embed.description = f"`NegativeAmount`: {exc}"
 
     await ctx.respond(embed=embed)

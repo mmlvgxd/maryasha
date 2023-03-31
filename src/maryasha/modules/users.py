@@ -39,15 +39,18 @@ from ..constants import USERS_PATH
 decoder = Decoder(dict[ID, User])
 encoder = Encoder()
 
+
 # Выгрузить словарь пользователей
 def load() -> dict[ID, User]:
-    with open(USERS_PATH, 'r') as stream:
+    with open(USERS_PATH, "r") as stream:
         return decoder.decode(stream.read())
+
 
 # Обновить словарь пользователей
 def dump(obj__: Any, /) -> None:
-    with open(USERS_PATH, 'wb') as stream:
+    with open(USERS_PATH, "wb") as stream:
         stream.write(encoder.encode(obj__))
+
 
 # Добавить в словарь пользователя
 def new(uid: ID) -> None:
@@ -56,9 +59,6 @@ def new(uid: ID) -> None:
     if uid not in users:
         numbers = card_numbers_generator()
 
-        users[uid] = User(
-            {'1': Truck()},
-            {numbers: Card()}
-        )
+        users[uid] = User({"1": Truck()}, {numbers: Card()})
 
     dump(users)

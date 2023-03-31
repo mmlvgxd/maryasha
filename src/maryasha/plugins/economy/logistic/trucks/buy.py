@@ -50,15 +50,15 @@ from .....modules.errors import TrucksLimit
 from .....modules.errors import NotEnoughCash
 
 
-group = Group('economy')
-sub_group = group.sub_group('logistic')
+group = Group("economy")
+sub_group = group.sub_group("logistic")
 
 plugin = Plugin()
 
-ru_LL = 'Купить грузовик'
-en_US_LL = 'Buy a truck'
+ru_LL = "Купить грузовик"
+en_US_LL = "Buy a truck"
 
-DESCRIPTION = locales.LocaleMap('logisticTrucksBuy', ru=ru_LL, en_US=en_US_LL)
+DESCRIPTION = locales.LocaleMap("logisticTrucksBuy", ru=ru_LL, en_US=en_US_LL)
 
 
 @plugin.include
@@ -67,8 +67,7 @@ DESCRIPTION = locales.LocaleMap('logisticTrucksBuy', ru=ru_LL, en_US=en_US_LL)
 @kebab.ify
 @command(description=DESCRIPTION)
 class TrucksBuy:
-    TITLE = 'Покупка'
-
+    TITLE = "Покупка"
 
     async def main(self) -> None:
         TRUCKS = self.user.trucks
@@ -80,10 +79,11 @@ class TrucksBuy:
             if cost < self.user.cash:
                 self.user.trucks[str(amount)] = Truck()
 
-                self.embed.description = \
-                    f'{E_T} Вы купили новый{W}' \
-                    f'**Грузовик №{amount}**{W}' \
-                    f'за `{sepint(cost)}`$'
+                self.embed.description = (
+                    f"{E_T} Вы купили новый{W}"
+                    f"**Грузовик №{amount}**{W}"
+                    f"за `{sepint(cost)}`$"
+                )
 
                 self.user.cash -= cost
                 dump(self.users)
@@ -91,7 +91,6 @@ class TrucksBuy:
                 raise NotEnoughCash
         else:
             raise TrucksLimit
-
 
     async def callback(self, ctx: Context) -> None:
         self.uid = str(ctx.user.id)

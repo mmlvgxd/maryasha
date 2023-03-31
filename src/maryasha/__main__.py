@@ -35,7 +35,7 @@ from .constants import ACTIVITY
 # If a UNIX-like system is used
 # It is possible to replace
 # Еhe standard asyncio with libuv uvloop
-if os.name != 'nt':
+if os.name != "nt":
     uvloop.install()
 
 # Запуск бота

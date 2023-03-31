@@ -25,9 +25,11 @@ from msgspec import Struct
 from .types import CardNumbers
 from .types import TruckNumber
 
+
 # Грузовик
 class Truck(Struct):
-    '''A Maryasha type describing a Truck'''
+    """A Maryasha type describing a Truck"""
+
     # Уровень грузовика
     # Truck level
     level: int = 1
@@ -35,9 +37,11 @@ class Truck(Struct):
     # Truck capacity
     capacity: int = 0
 
+
 # Карта
 class Card(Struct):
-    '''A Maryasha type describing a Card'''
+    """A Maryasha type describing a Card"""
+
     # Уровень карты
     # Card level
     level: int = 1
@@ -45,16 +49,18 @@ class Card(Struct):
     # Card money
     money: int = 0
 
+
 # Пользователь
 class User(Struct):
-    '''A Maryasha type describing a User'''
-    trucks: dict[TruckNumber, Truck] # Грузовики
-    cards: dict[CardNumbers, Card] # Карты
+    """A Maryasha type describing a User"""
 
-    banana: int = 0 # Бананы
+    trucks: dict[TruckNumber, Truck]  # Грузовики
+    cards: dict[CardNumbers, Card]  # Карты
 
-    monkey: int = 0 # Обезьяны
-    gorilla: int = 0 # Гориллы
-    orangutan: int = 0 # Орангутаны
+    banana: int = 0  # Бананы
 
-    cash: int = 0 # Наличные
+    monkey: int = 0  # Обезьяны
+    gorilla: int = 0  # Гориллы
+    orangutan: int = 0  # Орангутаны
+
+    cash: int = 0  # Наличные

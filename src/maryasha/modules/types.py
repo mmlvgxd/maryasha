@@ -24,10 +24,10 @@ from typing import NewType
 
 # ID пользователя Discord
 # ID of Discord user
-ID = NewType('ID', str)
+ID = NewType("ID", str)
 # Номер карты
 # Numbers of the card
-CardNumbers = NewType('Numbers', str)
+CardNumbers = NewType("Numbers", str)
 # Номер грузовика
 # Numbfer of the truck
-TruckNumber = NewType('Number', str)
+TruckNumber = NewType("Number", str)

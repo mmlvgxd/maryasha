@@ -54,15 +54,15 @@ from ....constants import EMBED_STD_COLOR
 from ....modules.errors import NotEnoughBanana
 
 
-group = Group('economy')
-sub_group = group.sub_group('fauna')
+group = Group("economy")
+sub_group = group.sub_group("fauna")
 
 plugin = Plugin()
 
-ru_LL = 'Приручить представителя фауны'
-en_US_LL = 'Tame a representative of the fauna'
+ru_LL = "Приручить представителя фауны"
+en_US_LL = "Tame a representative of the fauna"
 
-DESCRIPTION = locales.LocaleMap('faunaTame', ru=ru_LL, en_US=en_US_LL)
+DESCRIPTION = locales.LocaleMap("faunaTame", ru=ru_LL, en_US=en_US_LL)
 
 
 @plugin.include
@@ -71,22 +71,20 @@ DESCRIPTION = locales.LocaleMap('faunaTame', ru=ru_LL, en_US=en_US_LL)
 @kebab.ify
 @command(description=DESCRIPTION)
 class FaunaTame:
-    TITLE = 'Приручение'
+    TITLE = "Приручение"
 
-
-    representative = option(str, 'Тип', choices=[
-        (Monkey.locale, 'monkey'),
-        (Gorilla.locale, 'gorilla'),
-        (Orangutan.locale, 'orangutan')
-    ])
-
+    representative = option(
+        str,
+        "Тип",
+        choices=[
+            (Monkey.locale, "monkey"),
+            (Gorilla.locale, "gorilla"),
+            (Orangutan.locale, "orangutan"),
+        ],
+    )
 
     async def main(self) -> None:
-        fauna = {
-            'monkey': Monkey,
-            'gorilla': Gorilla,
-            'orangutan': Orangutan
-        }
+        fauna = {"monkey": Monkey, "gorilla": Gorilla, "orangutan": Orangutan}
 
         _representative = fauna[self.representative]
 
@@ -94,15 +92,15 @@ class FaunaTame:
         value = _representative.value
         rarity = _representative.rarity
 
-
         if self.user.banana > value:
             self.user.banana -= value
 
             if randint(1, rarity) == 1:
-                self.embed.title = 'Успешно!'
-                self.embed.description = \
-                    f'{E_MW} {E_WCM} Вы смогли приручить{W}' \
-                    f':{self.representative}: **{locale}**!'
+                self.embed.title = "Успешно!"
+                self.embed.description = (
+                    f"{E_MW} {E_WCM} Вы смогли приручить{W}"
+                    f":{self.representative}: **{locale}**!"
+                )
 
                 if _representative is Monkey:
                     self.user.monkey += 1
@@ -115,15 +113,15 @@ class FaunaTame:
 
                 return
 
-            self.embed.title = 'Упс!'
-            self.embed.description = \
-                f'{E_MW} {E_X} Вам не удалось приручить{W}' \
-                f':{self.representative}: **{locale}**!'
+            self.embed.title = "Упс!"
+            self.embed.description = (
+                f"{E_MW} {E_X} Вам не удалось приручить{W}"
+                f":{self.representative}: **{locale}**!"
+            )
         else:
             raise NotEnoughBanana
 
         dump(self.users)
-
 
     async def callback(self, ctx: Context) -> None:
         self.uid = str(ctx.user.id)
