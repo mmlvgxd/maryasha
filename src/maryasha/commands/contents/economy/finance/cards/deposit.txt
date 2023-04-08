@@ -1,1 +1,1 @@
-:credit_card: Вы положили :coin: `{humanize(self.amount)}`$ денег на карту
+:credit_card: Вы положили :coin: `{0}`$ денег на карту

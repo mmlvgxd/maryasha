@@ -77,10 +77,7 @@ class FloraCollect:
         with open(CONTENTS_PATH + "economy/flora/collect/base.txt", "r") as stream:
             content = stream.read()
 
-        self.embed.description = content.format(
-            self.uid,
-            humanize(collected)
-        )
+        self.embed.description = content.format(self.uid, humanize(collected))
 
         for representative in fauna.items():
             name = representative[0]

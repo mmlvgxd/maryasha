@@ -36,8 +36,8 @@ class SubClient(Client):
         if not was_handled:
             embed = Embed(
                 title=EMBED_ERR_TITLE,
-                description=f'`{exc.__class__.__name__}: {exc}`',
-                color=EMBED_ERR_COLOR
+                description=f"`{exc.__class__.__name__}: {exc}`",
+                color=EMBED_ERR_COLOR,
             )
 
             await ctx.respond(embed=embed)
