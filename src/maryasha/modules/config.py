@@ -21,16 +21,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 from os import environ
-from dotenv import load_dotenv
 
-from dataclasses import dataclass
+from dotenv import load_dotenv
 
 # Загрузить окружение .env
 load_dotenv()
 
 
-@dataclass
-class MaryashaConfig:
+class Config:
     # Получение из загруженного
     # Раннее окружения ключ с токеном
-    token: str = environ["token"]
+    TOKEN: str = environ["token"]

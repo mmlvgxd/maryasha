@@ -22,17 +22,17 @@
 # SOFTWARE.
 from flare import install
 
-from crescent import Client
 from hikari import GatewayBot
 
-from .modules.config import MaryashaConfig
+from .modules.config import Config
+from .subclasses.client import SubClient
 
 
-Maryasha = GatewayBot(MaryashaConfig.token, banner=None)
+Maryasha = GatewayBot(Config.TOKEN, banner=None)
 # Загрузка компонентов
 install(Maryasha)
 
-client = Client(Maryasha)
+client = SubClient(Maryasha)
 
 # Загрузка плагинов/команд
-client.plugins.load_folder("src.maryasha.plugins")
+client.plugins.load_folder("src.maryasha.commands.plugins")

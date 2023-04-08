@@ -1,0 +1,1 @@
+:magic_wand: :white_check_mark: Вы смогли приручить :{0}: **{1}**!

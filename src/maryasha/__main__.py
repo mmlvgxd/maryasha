@@ -20,13 +20,12 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-import os
-import uvloop
-
+from os import name
 from .core import Maryasha
-
 from .constants import STATUS
 from .constants import ACTIVITY
+
+from uvloop import install
 
 # Если используется UNIX-подобная система
 # Можно заменить
@@ -35,8 +34,8 @@ from .constants import ACTIVITY
 # If a UNIX-like system is used
 # It is possible to replace
 # Еhe standard asyncio with libuv uvloop
-if os.name != "nt":
-    uvloop.install()
+if name != "nt":
+    install()
 
 # Запуск бота
-Maryasha.run(activity=ACTIVITY, status=STATUS)
+Maryasha.run(activity=ACTIVITY, asyncio_debug=True, status=STATUS)

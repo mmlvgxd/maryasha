@@ -20,20 +20,16 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from msgspec.json import Decoder
-from msgspec.json import Encoder
-
 from typing import Any
-
 from .structs import User
 from .structs import Truck
 from .structs import Card
-
 from .types import ID
-
 from .economy import card_numbers_generator
-
 from ..constants import USERS_PATH
+
+from msgspec.json import Decoder
+from msgspec.json import Encoder
 
 
 decoder = Decoder(dict[ID, User])

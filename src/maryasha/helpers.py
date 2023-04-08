@@ -20,30 +20,35 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from . import __version__
+from hikari import Embed
+from hikari import Member
 
-from hikari import Color
-from hikari import Status
-from hikari import Activity
 
-# Статус & Активность бота
-# Status & Activity of the bot
-STATUS = Status.IDLE
-ACTIVITY = Activity(name=f"v{__version__}")
+# Установить автора с именем, равным имени пользователя, и значком, равным аватару
+# Set author with name equals username and icon equals avatar
+def author(member: Member, embed: Embed) -> None:
+    name = member.username
+    icon = member.avatar_url
 
-# Путь до пользователей
-# Path to users
-USERS_PATH = "./users.json"
+    embed.set_author(name=name, icon=icon)
 
-# Путь до содержимого
-# Path to contents
-CONTENTS_PATH = "./src/maryasha/commands/contents/"
 
-# Названия для эмбеда
-# Title for embed
-EMBED_ERR_TITLE = "Ошибка!"
+# Четное ли число
+# Is the number even
+def is_even(number: int) -> bool:
+    if number & 1:
+        # Нечетное
+        # Odd
+        return False
+    else:
+        # Четное
+        # Even
+        return True
 
-# Цвета для эмбедов
-# Colors for embeds
-EMBED_STD_COLOR = Color.from_rgb(159, 157, 207)
-EMBED_ERR_COLOR = Color.from_rgb(255, 75, 75)
+
+# Очеловечить число
+# Humanize number
+def humanize(number: int) -> str:
+    seperator = "_"
+
+    return f"{number:,}".replace(",", seperator)

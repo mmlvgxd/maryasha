@@ -20,30 +20,35 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from . import __version__
+from ....helpers import author
+from ....constants import EMBED_STD_COLOR, CONTENTS_PATH
 
-from hikari import Color
-from hikari import Status
-from hikari import Activity
+from crescent import command
+from crescent import Group, Plugin, Context
+from hikari import Embed
 
-# Статус & Активность бота
-# Status & Activity of the bot
-STATUS = Status.IDLE
-ACTIVITY = Activity(name=f"v{__version__}")
 
-# Путь до пользователей
-# Path to users
-USERS_PATH = "./users.json"
+group = Group("utilities")
 
-# Путь до содержимого
-# Path to contents
-CONTENTS_PATH = "./src/maryasha/commands/contents/"
+plugin = Plugin()
 
-# Названия для эмбеда
-# Title for embed
-EMBED_ERR_TITLE = "Ошибка!"
 
-# Цвета для эмбедов
-# Colors for embeds
-EMBED_STD_COLOR = Color.from_rgb(159, 157, 207)
-EMBED_ERR_COLOR = Color.from_rgb(255, 75, 75)
+NAME = "ping"
+DESCRIPTION = "Просмотр статуса бота"
+
+
+@plugin.include
+@group.child
+@command(name=NAME, description=DESCRIPTION)
+class Ping:
+    async def callback(self, ctx: Context) -> None:
+        with open(CONTENTS_PATH + "utilities/ping.txt", "r") as stream:
+            content = stream.read()
+
+        self.uid = str(ctx.user.id)
+        self.embed = Embed(title=DESCRIPTION, color=EMBED_STD_COLOR)
+        author(ctx.member, self.embed)
+
+        self.embed.description = content
+
+        await ctx.respond(embed=self.embed)

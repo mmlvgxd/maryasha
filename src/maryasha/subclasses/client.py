@@ -20,30 +20,24 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from . import __version__
+from ..constants import EMBED_ERR_COLOR, EMBED_ERR_TITLE
 
-from hikari import Color
-from hikari import Status
-from hikari import Activity
+from crescent import Client, Context, GatewayTraits
+from hikari import Embed
 
-# Статус & Активность бота
-# Status & Activity of the bot
-STATUS = Status.IDLE
-ACTIVITY = Activity(name=f"v{__version__}")
 
-# Путь до пользователей
-# Path to users
-USERS_PATH = "./users.json"
+class SubClient(Client):
+    def __init__(self, app: GatewayTraits) -> None:
+        super().__init__(app)
 
-# Путь до содержимого
-# Path to contents
-CONTENTS_PATH = "./src/maryasha/commands/contents/"
+    async def on_crescent_command_error(
+        self, exc: Exception, ctx: Context, was_handled: bool
+    ) -> None:
+        if not was_handled:
+            embed = Embed(
+                title=EMBED_ERR_TITLE,
+                description=f'`{exc.__class__.__name__}: {exc}`',
+                color=EMBED_ERR_COLOR
+            )
 
-# Названия для эмбеда
-# Title for embed
-EMBED_ERR_TITLE = "Ошибка!"
-
-# Цвета для эмбедов
-# Colors for embeds
-EMBED_STD_COLOR = Color.from_rgb(159, 157, 207)
-EMBED_ERR_COLOR = Color.from_rgb(255, 75, 75)
+            await ctx.respond(embed=embed)

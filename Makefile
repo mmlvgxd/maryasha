@@ -1,4 +1,4 @@
 run:
-	python3 -OO -B -m src.maryasha
+	python3.11 -OO -B -m src.maryasha
 setup:
-	python3 -m pip install -r requirements.txt
+	python3.11 -m pip install -r requirements.txt

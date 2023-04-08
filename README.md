@@ -1,6 +1,5 @@
 # Maryasha
-![](assets/banner.jpg)
-**Maryasha** is a open source discord bot written in `Python3` with `Hikari`, `Crescent` & `Flare`
+**Maryasha** is a open source discord bot written in `Python3.11` with `Hikari`, `Crescent` & `Flare`
 # Links
 [Author](https://mmlvgx.xp3.biz)\
 [Hikari](https://github.com/hikari-py/hikari)\

@@ -5,5 +5,7 @@ hikari
 hikari-flare
 hikari-crescent
 
-hikari-crescent[i18n]
+uvloop
+hikari[speedups]
+
 crescent-ext-kebabify
