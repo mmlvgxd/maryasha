@@ -25,7 +25,7 @@ from .....helpers import author
 from .....modules.users import load, dump, new
 from .....modules.errors import NotEnoughBanana
 from .....modules.fauna import Monkey, Gorilla, Orangutan
-from .....constants import EMBED_STD_COLOR, CONTENTS_PATH
+from .....constants import EMBED_STD_COLOR, CONTENTS
 
 from crescent import command, option
 from crescent.ext import kebab
@@ -40,6 +40,10 @@ plugin = Plugin()
 
 
 DESCRIPTION = "Покормить и приручить представителя фауны"
+
+
+feed_succes = "economy/fauna/feed/succes.txt"
+feed_failure = "economy/fauna/feed/failure.txt"
 
 
 @plugin.include
@@ -73,9 +77,7 @@ class FaunaFeed:
             if randint(1, _type__rarity) == 1:
                 self.embed.title = "Успешно!"
 
-                with open(
-                    CONTENTS_PATH + "economy/fauna/feed/succes.txt", "r"
-                ) as stream:
+                with open(CONTENTS + feed_succes, "r") as stream:
                     content = stream.read()
 
                 self.embed.description = content.format(self.type, _type__locale)
@@ -93,25 +95,24 @@ class FaunaFeed:
 
             self.embed.title = "Упс!"
 
-            with open(CONTENTS_PATH + "economy/fauna/feed/failure.txt", "r") as stream:
+            with open(CONTENTS + feed_failure, "r") as stream:
                 content = stream.read()
 
             self.embed.description = content.format(self.type, _type__locale)
         else:
             raise NotEnoughBanana
 
-        dump(self.users)
+        
 
     async def callback(self, ctx: Context) -> None:
-        self.uid = str(ctx.user.id)
+        self.id__ = str(ctx.user.id)
 
         self.embed = Embed(title=DESCRIPTION, color=EMBED_STD_COLOR)
         author(ctx.member, self.embed)
 
-        new(self.uid)
+        new(self.id__)
         self.users = load()
-        self.user = self.users[self.uid]
+        self.user = self.users[self.id__]
 
         await self.main()
-
         await ctx.respond(embed=self.embed)

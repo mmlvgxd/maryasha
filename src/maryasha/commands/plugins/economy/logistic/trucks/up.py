@@ -22,8 +22,8 @@
 # SOFTWARE.
 from ......helpers import author, humanize
 from ......modules.economy import truck_level_cost
-from ......modules.users import load, dump, new
-from ......constants import EMBED_STD_COLOR, CONTENTS_PATH
+from ......modules.users import load, new, dump
+from ......constants import EMBED_STD_COLOR, CONTENTS
 from ......modules.errors import NotEnoughCash
 
 from crescent import command, option
@@ -62,11 +62,11 @@ class TrucksUp:
         if CASH > cost:
             name = f"Грузовик №{self.number}"
 
-            with open(CONTENTS_PATH + "economy/logistic/trucks/up.txt", "r") as stream:
+            with open(CONTENTS + "economy/logistic/trucks/up.txt", "r") as stream:
                 content = stream.read()
 
             self.embed.description = content.format(
-                self.uid, name, NEXT_LEVEL, humanize(cost)
+                self.id__, name, NEXT_LEVEL, humanize(cost)
             )
 
             self.user.trucks[self.number].level = NEXT_LEVEL
@@ -77,15 +77,14 @@ class TrucksUp:
             raise NotEnoughCash
 
     async def callback(self, ctx: Context) -> None:
-        self.uid = str(ctx.user.id)
+        self.id__ = str(ctx.user.id)
 
         self.embed = Embed(title=DESCRIPTION, color=EMBED_STD_COLOR)
         author(ctx.member, self.embed)
 
-        new(self.uid)
+        new(self.id__)
         self.users = load()
-        self.user = self.users[self.uid]
+        self.user = self.users[self.id__]
 
         await self.main()
-
         await ctx.respond(embed=self.embed)

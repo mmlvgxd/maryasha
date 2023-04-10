@@ -22,9 +22,9 @@
 # SOFTWARE.
 from asyncio import gather
 from ......helpers import author, humanize
-from ......modules.users import load, dump, new
+from ......modules.users import load, new, dump
 from ......modules.economy import card_max_money
-from ......constants import EMBED_STD_COLOR, CONTENTS_PATH
+from ......constants import EMBED_STD_COLOR, CONTENTS
 from ......modules.errors import NegativeAmount, CardMoneyLimit, NotEnoughMoney
 
 from crescent import command, option
@@ -84,7 +84,7 @@ class CardsWithdraw:
                 dump(self.users)
 
                 with open(
-                    CONTENTS_PATH + "economy/finance/cards/up.txt", "r"
+                    CONTENTS + "economy/finance/cards/up.txt", "r"
                 ) as stream:
                     content = stream.read()
 
@@ -100,15 +100,14 @@ class CardsWithdraw:
         return components
 
     async def callback(self, ctx: Context) -> None:
-        self.uid = str(ctx.user.id)
+        self.id__ = str(ctx.user.id)
 
         self.embed = Embed(title=DESCRIPTION, color=EMBED_STD_COLOR)
         author(ctx.member, self.embed)
 
-        new(self.uid)
+        new(self.id__)
         self.users = load()
-        self.user = self.users[self.uid]
+        self.user = self.users[self.id__]
 
         components = await self.main()
-
         await ctx.respond(embed=self.embed, components=components, ephemeral=True)

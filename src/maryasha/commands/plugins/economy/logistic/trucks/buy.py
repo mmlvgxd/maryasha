@@ -22,11 +22,10 @@
 # SOFTWARE.
 from ......helpers import author, humanize
 from ......modules.economy import truck_cost
-from ......modules.users import load, dump, new
-from ......modules.structs import Truck
+from ......modules.users import load, new, dump, Truck
 from ......modules.errors import TrucksLimit, NotEnoughCash
 from ......constants import EMBED_STD_COLOR
-from ......constants import CONTENTS_PATH
+from ......constants import CONTENTS
 
 from crescent import command
 from crescent import Group, Plugin, Context
@@ -43,6 +42,9 @@ plugin = Plugin()
 DESCRIPTION = "Купить грузовик"
 
 
+trucks_buy = "economy/logistic/trucks/buy.txt"
+
+
 @plugin.include
 @group.child
 @sub_group.child
@@ -51,7 +53,11 @@ DESCRIPTION = "Купить грузовик"
 class TrucksBuy:
     async def main(self) -> None:
         TRUCKS = self.user.trucks
-        amount = len(TRUCKS.items()) + 1
+
+        if TRUCKS is not None:
+            amount = len(TRUCKS.items()) + 1
+        else:
+            amount = 1
 
         if amount <= 10:
             cost = truck_cost(amount)
@@ -59,9 +65,7 @@ class TrucksBuy:
             if cost < self.user.cash:
                 self.user.trucks[str(amount)] = Truck()
 
-                with open(
-                    CONTENTS_PATH + "economy/logistic/trucks/buy.txt", "r"
-                ) as stream:
+                with open(CONTENTS + trucks_buy, "r") as stream:
                     content = stream.read()
 
                 self.embed.description = content.format(amount, humanize(cost))
@@ -74,15 +78,14 @@ class TrucksBuy:
             raise TrucksLimit
 
     async def callback(self, ctx: Context) -> None:
-        self.uid = str(ctx.user.id)
+        self.id__ = str(ctx.user.id)
 
         self.embed = Embed(title=DESCRIPTION, color=EMBED_STD_COLOR)
         author(ctx.member, self.embed)
 
-        new(self.uid)
+        new(self.id__)
         self.users = load()
-        self.user = self.users[self.uid]
+        self.user = self.users[self.id__]
 
         await self.main()
-
         await ctx.respond(embed=self.embed)

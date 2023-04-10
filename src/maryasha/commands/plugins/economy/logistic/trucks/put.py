@@ -22,8 +22,8 @@
 # SOFTWARE.
 from ......helpers import author, humanize, is_even
 from ......modules.economy import truck_max_capacity
-from ......modules.users import load, dump, new
-from ......constants import EMBED_STD_COLOR, CONTENTS_PATH
+from ......modules.users import load, new, dump
+from ......constants import EMBED_STD_COLOR, CONTENTS
 
 from crescent import command
 from crescent import Group, Plugin, Context
@@ -38,6 +38,11 @@ plugin = Plugin()
 
 
 DESCRIPTION = "Поместить бананы в грузовики"
+
+
+put_full = "economy/logistic/trucks/put/full.txt"
+put_base = "economy/logistic/trucks/put/base.txt"
+put_end = "economy/logistic/trucks/put/end.txt"
 
 
 @plugin.include
@@ -66,9 +71,7 @@ class TrucksPut:
             emoji = ":articulated_lorry:" if is_even(int(number)) else ":truck:"
 
             if capacity >= max_capacity:
-                with open(
-                    CONTENTS_PATH + "economy/logistic/trucks/put/full.txt", "r"
-                ) as stream:
+                with open(CONTENTS + put_full, "r") as stream:
                     content = stream.read()
 
                 self.embed.description += content.format(
@@ -88,18 +91,20 @@ class TrucksPut:
                 _total += 1
                 BANANA -= 1
 
-            with open(
-                CONTENTS_PATH + "economy/logistic/trucks/put/base.txt", "r"
-            ) as stream:
+            with open(CONTENTS + put_base, "r") as stream:
                 content = stream.read()
 
+            # fmt: off
             self.embed.description += content.format(
-                humanize(total), humanize(max_capacity), emoji, number
+                humanize(total),
+                humanize(max_capacity),
+                emoji, number
             )
+            # fmt: on
 
             self.user.trucks[number].capacity += _total
 
-        with open(CONTENTS_PATH + "economy/logistic/trucks/put/end.txt", "r") as stream:
+        with open(CONTENTS + put_end, "r") as stream:
             content = stream.read()
 
         self.embed.description += content.format(humanize(BANANA))
@@ -109,15 +114,14 @@ class TrucksPut:
         dump(self.users)
 
     async def callback(self, ctx: Context) -> None:
-        self.uid = str(ctx.user.id)
+        self.id__ = str(ctx.user.id)
 
         self.embed = Embed(title=DESCRIPTION, color=EMBED_STD_COLOR)
         author(ctx.member, self.embed)
 
-        new(self.uid)
+        new(self.id__)
         self.users = load()
-        self.user = self.users[self.uid]
+        self.user = self.users[self.id__]
 
         await self.main()
-
         await ctx.respond(embed=self.embed)

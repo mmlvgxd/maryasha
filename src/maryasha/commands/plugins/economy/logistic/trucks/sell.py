@@ -22,8 +22,8 @@
 # SOFTWARE.
 from ......helpers import author, humanize, is_even
 from ......modules.economy import truck_sell
-from ......modules.users import load, dump, new
-from ......constants import EMBED_STD_COLOR, CONTENTS_PATH
+from ......modules.users import load, new, dump
+from ......constants import EMBED_STD_COLOR, CONTENTS
 
 from crescent import command
 from crescent import Group, Plugin, Context
@@ -38,6 +38,10 @@ plugin = Plugin()
 
 
 DESCRIPTION = "Продать бананы из грузовика"
+
+
+sell_base = "economy/logistic/trucks/sell/base.txt"
+sell_total = "economy/logistic/trucks/sell/total.txt"
 
 
 @plugin.include
@@ -66,18 +70,14 @@ class TrucksSell:
 
             emoji = ":articulated_lorry:" if is_even(int(number)) else ":truck:"
 
-            with open(
-                CONTENTS_PATH + "economy/logistic/trucks/sell/base.txt", "r"
-            ) as stream:
+            with open(CONTENTS + sell_base, "r") as stream:
                 content = stream.read()
 
             self.embed.description += content.format(
                 emoji, number, humanize(sold), humanize(earnings)
             )
 
-        with open(
-            CONTENTS_PATH + "economy/logistic/trucks/sell/total.txt", "r"
-        ) as stream:
+        with open(CONTENTS + sell_total, "r") as stream:
             content = stream.read()
 
         self.embed.description += content.format(humanize(TOTAL_EARNINGS))
@@ -87,15 +87,14 @@ class TrucksSell:
         dump(self.users)
 
     async def callback(self, ctx: Context) -> None:
-        self.uid = str(ctx.user.id)
+        self.id__ = str(ctx.user.id)
 
         self.embed = Embed(title=DESCRIPTION, color=EMBED_STD_COLOR)
         author(ctx.member, self.embed)
 
-        new(self.uid)
+        new(self.id__)
         self.users = load()
-        self.user = self.users[self.uid]
+        self.user = self.users[self.id__]
 
         await self.main()
-
         await ctx.respond(embed=self.embed)

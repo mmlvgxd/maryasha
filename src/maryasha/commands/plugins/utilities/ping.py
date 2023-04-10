@@ -21,7 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 from ....helpers import author
-from ....constants import EMBED_STD_COLOR, CONTENTS_PATH
+from ....constants import EMBED_STD_COLOR, CONTENTS
 
 from crescent import command
 from crescent import Group, Plugin, Context
@@ -42,10 +42,10 @@ DESCRIPTION = "Просмотр статуса бота"
 @command(name=NAME, description=DESCRIPTION)
 class Ping:
     async def callback(self, ctx: Context) -> None:
-        with open(CONTENTS_PATH + "utilities/ping.txt", "r") as stream:
+        with open(CONTENTS + "utilities/ping.txt", "r") as stream:
             content = stream.read()
 
-        self.uid = str(ctx.user.id)
+        self.id__ = str(ctx.user.id)
         self.embed = Embed(title=DESCRIPTION, color=EMBED_STD_COLOR)
         author(ctx.member, self.embed)
 

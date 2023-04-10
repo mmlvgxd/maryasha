@@ -21,37 +21,54 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 from typing import Any
-from .structs import User, Truck, Card
-from .economy import card_numbers_generator
-from .types import ID
-from ..constants import USERS_PATH
+from ..constants import USERS
 
+from msgspec import Struct
 from msgspec.json import Decoder, Encoder
 
 
-decoder = Decoder(dict[ID, User])
+class Card(Struct):
+    level: int = 1
+    money: int = 0
+
+
+class Truck(Struct):
+    level: int = 1
+    capacity: int = 0
+
+
+class User(Struct):
+    # Flora
+    banana: int = 0
+    # Fauna
+    monkey: int = 0
+    gorilla: int = 0
+    orangutan: int = 0
+    # Finance
+    cash: int = 0
+    cards: dict[str, Card] | None = None
+    # Logistic
+    trucks: dict[str, Truck] | None = None
+
+
+decoder = Decoder(dict[str, User])
 encoder = Encoder()
 
 
-# Выгрузить словарь пользователей
-def load() -> dict[ID, User]:
-    with open(USERS_PATH, "r") as stream:
+def load() -> dict[str, User]:
+    with open(USERS, "r") as stream:
         return decoder.decode(stream.read())
 
 
-# Обновить словарь пользователей
 def dump(obj__: Any, /) -> None:
-    with open(USERS_PATH, "wb") as stream:
+    with open(USERS, "wb") as stream:
         stream.write(encoder.encode(obj__))
 
 
-# Добавить в словарь пользователя
-def new(uid: ID) -> None:
+def new(id__: str) -> None:
     users = load()
 
-    if uid not in users:
-        numbers = card_numbers_generator()
-
-        users[uid] = User({"1": Truck()}, {numbers: Card()})
+    if id__ not in users:
+        users[id__] = User()
 
     dump(users)

@@ -48,3 +48,8 @@ class NotEnoughMoney(Exception):
 class NotEnoughCash(Exception):
     def __init__(self) -> None:
         super().__init__("Недостаточно наличных")
+
+
+class DontHaveTrucks(Exception):
+    def __init__(self) -> None:
+        super().__init__("У вас нет грузовиков")

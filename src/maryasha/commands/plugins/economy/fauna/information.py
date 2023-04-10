@@ -22,7 +22,7 @@
 # SOFTWARE.
 from .....helpers import author, humanize
 from .....modules.fauna import Monkey, Gorilla, Orangutan
-from .....constants import EMBED_STD_COLOR, CONTENTS_PATH
+from .....constants import EMBED_STD_COLOR, CONTENTS
 
 from crescent import command, option
 from crescent import Group, Plugin, Context
@@ -64,7 +64,7 @@ class FaunaInformation:
         _value__ = type__.value
         _rarity__ = type__.rarity
 
-        with open(CONTENTS_PATH + "economy/fauna/information.txt", "r") as stream:
+        with open(CONTENTS, "r") as stream:
             content = stream.read()
 
         _value = content.format(self.type, humanize(_value__), humanize(_rarity__))
@@ -72,11 +72,8 @@ class FaunaInformation:
         self.embed.add_field(name=_locale__, value=_value)
 
     async def callback(self, ctx: Context) -> None:
-        self.uid = str(ctx.user.id)
-
         self.embed = Embed(title=DESCRIPTION, color=EMBED_STD_COLOR)
         author(ctx.member, self.embed)
 
         await self.main()
-
         await ctx.respond(embed=self.embed)

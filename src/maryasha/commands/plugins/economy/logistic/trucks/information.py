@@ -24,7 +24,7 @@ from ......helpers import author, humanize
 from ......modules.economy import truck_cost
 from ......modules.users import load, new
 from ......modules.errors import TrucksLimit
-from ......constants import EMBED_STD_COLOR, CONTENTS_PATH
+from ......constants import EMBED_STD_COLOR, CONTENTS
 
 from crescent import command
 from crescent import Group, Plugin, Context
@@ -41,6 +41,9 @@ plugin = Plugin()
 DESCRIPTION = "Информация о грузовиках"
 
 
+trucks_information = "economy/logistic/trucks/information.txt"
+
+
 @plugin.include
 @group.child
 @sub_group.child
@@ -54,9 +57,7 @@ class TrucksInformation:
         if amount <= 10:
             cost = truck_cost(amount)
 
-            with open(
-                CONTENTS_PATH + "economy/logistic/trucks/information.txt", "r"
-            ) as stream:
+            with open(CONTENTS + trucks_information, "r") as stream:
                 content = stream.read()
 
             self.embed.description = content.format(humanize(cost))
@@ -64,15 +65,14 @@ class TrucksInformation:
             raise TrucksLimit
 
     async def callback(self, ctx: Context) -> None:
-        self.uid = str(ctx.user.id)
+        self.id__ = str(ctx.user.id)
 
         self.embed = Embed(title=DESCRIPTION, color=EMBED_STD_COLOR)
         author(ctx.member, self.embed)
 
-        new(self.uid)
+        new(self.id__)
         self.users = load()
-        self.user = self.users[self.uid]
+        self.user = self.users[self.id__]
 
         await self.main()
-
         await ctx.respond(embed=self.embed)

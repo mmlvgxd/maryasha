@@ -23,8 +23,8 @@
 from ....helpers import author, humanize
 from ....modules.users import load, new
 from ....modules.economy import truck_max_capacity, card_max_money
-from ....modules.structs import User
-from ....constants import EMBED_STD_COLOR, CONTENTS_PATH
+from ....constants import EMBED_STD_COLOR, CONTENTS
+from ....modules.errors import DontHaveTrucks
 
 from crescent import command, option
 from crescent import Group, Plugin, Context
@@ -36,6 +36,13 @@ plugin = Plugin()
 
 NAME = "profile"
 DESCRIPTION = "Профиль пользователя"
+
+
+fauna = "economy/profile/fauna.txt"
+flora = "economy/profile/flora.txt"
+finance_base = "economy/profile/finance/base.txt"
+finance_cards = "economy/profile/finance/cards.txt"
+logistic_trucks = "economy/profile/logistic/trucks.txt"
 
 
 @plugin.include
@@ -55,12 +62,12 @@ class Profile:
     )
     # fmt: on
 
-    async def fauna(self, user: User) -> None:
-        MONKEY = user.monkey
-        GORILLA = user.gorilla
-        ORANGUTAN = user.orangutan
+    async def fauna(self) -> None:
+        MONKEY = self.user.monkey
+        GORILLA = self.user.gorilla
+        ORANGUTAN = self.user.orangutan
 
-        with open(CONTENTS_PATH + "economy/profile/fauna.txt", "r") as stream:
+        with open(CONTENTS + fauna, "r") as stream:
             content = stream.read()
 
         # fmt: off
@@ -73,26 +80,26 @@ class Profile:
 
         self.embed.description = description
 
-    async def flora(self, user: User) -> None:
-        BANANA = user.banana
+    async def flora(self) -> None:
+        BANANA = self.user.banana
 
-        with open(CONTENTS_PATH + "economy/profile/flora.txt", "r") as stream:
+        with open(CONTENTS + flora, "r") as stream:
             content = stream.read()
 
         description = content.format(humanize(BANANA))
 
         self.embed.description = description
 
-    async def finance(self, user: User) -> None:
-        CASH = user.cash
+    async def finance(self) -> None:
+        CASH = self.user.cash
 
-        with open(CONTENTS_PATH + "economy/profile/finance/base.txt", "r") as stream:
+        with open(CONTENTS + finance_base, "r") as stream:
             content = stream.read()
 
         description = content.format(humanize(CASH))
 
-        if user.cards is not None:
-            for card in user.cards.items():
+        if self.user.cards is not None:
+            for card in self.user.cards.items():
                 numbers = card[0]
                 properties = card[1]
 
@@ -101,9 +108,7 @@ class Profile:
 
                 max_money = card_max_money(level)
 
-                with open(
-                    CONTENTS_PATH + "economy/profile/finance/cards.txt", "r"
-                ) as stream:
+                with open(CONTENTS + finance_cards, "r") as stream:
                     content = stream.read()
 
                 # fmt: off
@@ -119,40 +124,41 @@ class Profile:
 
         self.embed.description = description
 
-    async def logistic(self, user: User) -> None:
+    async def logistic(self) -> None:
         description = str()
 
-        TRUCKS = user.trucks
+        TRUCKS = self.user.trucks
 
-        for truck in TRUCKS.items():
-            index = truck[0]
-            properties = truck[1]
+        if TRUCKS is None:
+            for truck in TRUCKS.items():
+                index = truck[0]
+                properties = truck[1]
 
-            level = properties.level
-            capacity = properties.capacity
+                level = properties.level
+                capacity = properties.capacity
 
-            max_capacity = truck_max_capacity(level)
+                max_capacity = truck_max_capacity(level)
 
-            name = f"Грузовик №{index}"
+                name = f"Грузовик №{index}"
 
-            with open(
-                CONTENTS_PATH + "economy/profile/logistic/trucks.txt", "r"
-            ) as stream:
-                content = stream.read()
+                with open(CONTENTS + logistic_trucks, "r") as stream:
+                    content = stream.read()
 
-            # fmt: off
-            description += content.format(
-                name,
-                humanize(level),
-                humanize(capacity),
-                humanize(max_capacity)
-            )
-            # fmt: on
+                # fmt: off
+                description += content.format(
+                    name,
+                    humanize(level),
+                    humanize(capacity),
+                    humanize(max_capacity)
+                )
+                # fmt: on
+        else:
+            raise DontHaveTrucks
 
         self.embed.description = description
 
     async def callback(self, ctx: Context) -> None:
-        self.uid = str(ctx.user.id)
+        self.id__ = str(ctx.user.id)
         self.embed = Embed(title=DESCRIPTION, color=EMBED_STD_COLOR)
         author(ctx.member, self.embed)
 
@@ -163,12 +169,12 @@ class Profile:
             "4": self.logistic,
         }
 
-        new(self.uid)
-        users = load()
-        user = users[self.uid]
+        new(self.id__)
+        self.users = load()
+        self.user = self.users[self.id__]
 
         for _type in types.items():
             if self.type == _type[0]:
-                await _type[1](user)
+                await _type[1]()
 
         await ctx.respond(embed=self.embed)

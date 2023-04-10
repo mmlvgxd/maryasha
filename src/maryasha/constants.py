@@ -33,11 +33,11 @@ ACTIVITY = Activity(name=f"v{__version__}")
 
 # Путь до пользователей
 # Path to users
-USERS_PATH = "./users.json"
+USERS = "./users.json"
 
 # Путь до содержимого
 # Path to contents
-CONTENTS_PATH = "./src/maryasha/commands/contents/"
+CONTENTS = "./src/maryasha/commands/contents/"
 
 # Названия для эмбеда
 # Title for embed

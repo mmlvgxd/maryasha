@@ -20,6 +20,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+from traceback import print_exception
 from ..constants import EMBED_ERR_COLOR, EMBED_ERR_TITLE
 
 from crescent import Client, Context, GatewayTraits
@@ -41,3 +42,4 @@ class SubClient(Client):
             )
 
             await ctx.respond(embed=embed)
+            print_exception(exc.__class__, exc, exc.__traceback__)

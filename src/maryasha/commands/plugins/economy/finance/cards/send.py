@@ -22,9 +22,9 @@
 # SOFTWARE.
 from asyncio import gather
 from ......helpers import author, humanize
-from ......modules.users import load, dump, new
+from ......modules.users import load, new, dump
 from ......modules.economy import card_max_money
-from ......constants import EMBED_STD_COLOR, CONTENTS_PATH
+from ......constants import EMBED_STD_COLOR, CONTENTS
 from ......modules.errors import NegativeAmount, CardMoneyLimit, NotEnoughMoney
 
 from crescent import command, option
@@ -88,11 +88,11 @@ class CardsSend:
 
             dump(self.users)
 
-            with open(CONTENTS_PATH + "economy/finance/cards/send.txt", "r") as stream:
+            with open(CONTENTS + "economy/finance/cards/send.txt", "r") as stream:
                 content = stream.read()
 
             __embed.description = content.format(
-                self.uid, self.ruid, humanize(self.amount)
+                self.id__, self.rid__, humanize(self.amount)
             )
 
             await ctx.respond(embed=__embed)
@@ -118,18 +118,17 @@ class CardsSend:
         return components
 
     async def callback(self, ctx: Context) -> None:
-        self.uid = str(ctx.user.id)
-        self.ruid = str(self.reciever.id)
+        self.id__ = str(ctx.user.id)
+        self.rid = str(self.reciever.id)
 
         self.embed = Embed(title=DESCRIPTION, color=EMBED_STD_COLOR)
         author(ctx.member, self.embed)
 
-        new(self.uid)
-        new(self.ruid)
-
+        new(self.id__)
+        new(self.rid)
         self.users = load()
-        self.user = self.users[self.uid]
-        self.ruser = self.users[self.ruid]
+        self.user = self.users[self.id__]
+        self.ruser = self.users[self.rid]
 
         components = await self.main()
 
